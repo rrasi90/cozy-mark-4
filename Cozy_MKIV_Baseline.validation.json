@@ -1,0 +1,200 @@
+{
+  "timestamp_utc": "2026-09-17T11:20:00.231922+00:00",
+  "openvsp_version": "OpenVSP 3.51.2",
+  "source_sha256": "425b404663dee0fba4f35c117b9a8a883701408bc98a75cedd87527f012c7f78",
+  "model_sha256": "c360b1d572be7f1216c899285127498eb89feae0fd241faa3e68886f6b766566",
+  "model": "Cozy_MKIV_Baseline.vsp3",
+  "units": {
+    "length": "ft",
+    "area": "ft^2",
+    "angle": "deg"
+  },
+  "parameters": {
+    "overall_length": 16.9,
+    "main_span": 28.1,
+    "main_area": 88.3,
+    "canard_span": 11.5,
+    "canard_area": 21.0,
+    "fuselage_length": 16.9,
+    "fuselage_max_dia": 3.5,
+    "wing_x": 8.05,
+    "wing_z": 1.45,
+    "canard_x": 3.15,
+    "canard_z": 1.95,
+    "winglet_x": 13.2,
+    "winglet_z": 1.75,
+    "prop_x": 15.6,
+    "prop_z": 2.1
+  },
+  "validation_scope": "Parameter consistency and serialization only; not aerodynamic validation",
+  "passed": true,
+  "before_save": [
+    {
+      "name": "geometry_count",
+      "actual": 16,
+      "expected": 16,
+      "passed": true
+    },
+    {
+      "name": "unique_geometry_names",
+      "actual": 16,
+      "expected": 16,
+      "passed": true
+    },
+    {
+      "name": "Main Wing: span_ft",
+      "actual": 28.1,
+      "expected": 28.1,
+      "passed": true
+    },
+    {
+      "name": "Main Wing: area_ft2",
+      "actual": 88.3,
+      "expected": 88.3,
+      "passed": true
+    },
+    {
+      "name": "Main Wing: derived_aspect",
+      "actual": 8.942355605889016,
+      "expected": 8.942355605889016,
+      "passed": true
+    },
+    {
+      "name": "Canard \u2014 Roncz 1145MS verification needed: span_ft",
+      "actual": 11.5,
+      "expected": 11.5,
+      "passed": true
+    },
+    {
+      "name": "Canard \u2014 Roncz 1145MS verification needed: area_ft2",
+      "actual": 21.0,
+      "expected": 21.0,
+      "passed": true
+    },
+    {
+      "name": "Canard \u2014 Roncz 1145MS verification needed: derived_aspect",
+      "actual": 6.2976190476190474,
+      "expected": 6.2976190476190474,
+      "passed": true
+    },
+    {
+      "name": "Main-wing tip winglets: span_ft",
+      "actual": 3.0,
+      "expected": 3.0,
+      "passed": true
+    },
+    {
+      "name": "Main-wing tip winglets: area_ft2",
+      "actual": 8.0,
+      "expected": 8.0,
+      "passed": true
+    },
+    {
+      "name": "Main-wing tip winglets: derived_aspect",
+      "actual": 1.125,
+      "expected": 1.125,
+      "passed": true
+    },
+    {
+      "name": "fuselage_length_ft",
+      "actual": 16.9,
+      "expected": 16.9,
+      "passed": true
+    },
+    {
+      "name": "fuselage_max_section_dimension_ft",
+      "actual": 3.5,
+      "expected": 3.5,
+      "passed": true
+    }
+  ],
+  "after_reload": [
+    {
+      "name": "geometry_count",
+      "actual": 16,
+      "expected": 16,
+      "passed": true
+    },
+    {
+      "name": "unique_geometry_names",
+      "actual": 16,
+      "expected": 16,
+      "passed": true
+    },
+    {
+      "name": "Main Wing: span_ft",
+      "actual": 28.1,
+      "expected": 28.1,
+      "passed": true
+    },
+    {
+      "name": "Main Wing: area_ft2",
+      "actual": 88.3,
+      "expected": 88.3,
+      "passed": true
+    },
+    {
+      "name": "Main Wing: derived_aspect",
+      "actual": 8.942355605889016,
+      "expected": 8.942355605889016,
+      "passed": true
+    },
+    {
+      "name": "Canard \u2014 Roncz 1145MS verification needed: span_ft",
+      "actual": 11.5,
+      "expected": 11.5,
+      "passed": true
+    },
+    {
+      "name": "Canard \u2014 Roncz 1145MS verification needed: area_ft2",
+      "actual": 21.0,
+      "expected": 21.0,
+      "passed": true
+    },
+    {
+      "name": "Canard \u2014 Roncz 1145MS verification needed: derived_aspect",
+      "actual": 6.2976190476190474,
+      "expected": 6.2976190476190474,
+      "passed": true
+    },
+    {
+      "name": "Main-wing tip winglets: span_ft",
+      "actual": 3.0,
+      "expected": 3.0,
+      "passed": true
+    },
+    {
+      "name": "Main-wing tip winglets: area_ft2",
+      "actual": 8.0,
+      "expected": 8.0,
+      "passed": true
+    },
+    {
+      "name": "Main-wing tip winglets: derived_aspect",
+      "actual": 1.125,
+      "expected": 1.125,
+      "passed": true
+    },
+    {
+      "name": "fuselage_length_ft",
+      "actual": 16.9,
+      "expected": 16.9,
+      "passed": true
+    },
+    {
+      "name": "fuselage_max_section_dimension_ft",
+      "actual": 3.5,
+      "expected": 3.5,
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Dimensions have not been traced to drawings or manual pages",
+    "Winglets retain the original placeholder location and rotation; not validated as vertical tip surfaces",
+    "Airfoils, sweep, taper, twist and incidence are not plan-validated",
+    "Fuselage retains scaled default sections, not a plan-derived loft",
+    "Propeller mode and orientation are unverified; no propulsion analysis",
+    "Internal envelopes are not calibrated masses and remain in SET_ALL",
+    "No aerodynamic, trim, stability, stall, structural or flightworthiness assessment"
+  ]
+}
