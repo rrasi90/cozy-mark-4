@@ -110,6 +110,7 @@
     ],
     "provenance": "Solved from dimension texts and LONGARROW positions inside COZY3V.DXF; no scale was assumed."
   },
+  "body_loft": "body_loft.json",
   "datums": {
     "x_origin": "nose tip",
     "x_axis": "+x aft",
@@ -128,7 +129,7 @@
   "status_counts": {
     "match": 28,
     "off": 0,
-    "no-model-value": 4
+    "no-model-value": 16
   },
   "rows": [
     {
@@ -1212,10 +1213,10 @@
     },
     {
       "id": "fuselage_center_height_ft",
-      "label": "Fuselage section centre height above ground",
+      "label": "Fuselage centre height above ground",
       "unit": "ft",
       "method": "polyline-measured",
-      "drawing_value": 3.356805,
+      "drawing_value": 3.763863,
       "tolerance": 0.05,
       "source": {
         "file": "COZY3V.DXF",
@@ -1226,31 +1227,369 @@
         ],
         "entities": [
           1927,
-          3217
+          2692,
+          2044
         ],
-        "detail": "Forward fuselage outline of the side view."
+        "detail": "Envelope of the three side-view body outlines; the centre height is the mid-height of that envelope."
       },
       "cross_checks": [
+        {
+          "label": "forward fuselage 1927 mid height",
+          "value_ft": 3.356805,
+          "entities": [
+            1927
+          ]
+        },
+        {
+          "label": "rear fuselage 2044 mid height",
+          "value_ft": 3.654052,
+          "entities": [
+            2044
+          ]
+        },
         {
           "label": "front view fuselage section 1148",
           "value_ft": 3.490768,
           "entities": [
             1148
           ]
-        },
-        {
-          "label": "rear fuselage 2044",
-          "value_ft": 3.654052,
-          "entities": [
-            2044
-          ]
         }
       ],
       "model_parameter": "fuselage_z",
-      "model_value": 3.356805,
+      "model_value": 3.763863,
       "deviation": 0.0,
       "status": "match",
-      "note": "The model fuselage cross sections are still scaled defaults, so only the datum can be matched, not the section shape."
+      "note": "The fuselage is lofted from the side-view silhouette of outlines 1927 (forward body), 2692 (turtledeck ramp) and 2044 (aft body), so the model centre height is the mid-height of the whole silhouette, not of the forward body alone. The three outline mid heights span 3.3568 to 3.6541 ft and the front view section 1148 sits 0.273 ft from the side-view silhouette centre; the side view carries the explicit ground line and is the height datum."
+    },
+    {
+      "id": "fuselage_section_width_st_6.90_ft",
+      "label": "Fuselage section width, station 6.90 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 3.424766,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          678,
+          457
+        ],
+        "detail": "Envelope of plan outlines 678 and 457 at station 6.902913 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json."
+    },
+    {
+      "id": "fuselage_section_height_st_6.90_ft",
+      "label": "Fuselage section height, station 6.90 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 1.737503,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          1927,
+          2692,
+          2044
+        ],
+        "detail": "Envelope of side outlines 1927, 2692, 2044 at station 6.902913 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json."
+    },
+    {
+      "id": "fuselage_section_width_st_3.51_ft",
+      "label": "Fuselage section width, station 3.51 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 2.954854,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          678,
+          457
+        ],
+        "detail": "Envelope of plan outlines 678 and 457 at station 3.507363 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json."
+    },
+    {
+      "id": "fuselage_section_height_st_3.51_ft",
+      "label": "Fuselage section height, station 3.51 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 1.955805,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          1927,
+          2692,
+          2044
+        ],
+        "detail": "Envelope of side outlines 1927, 2692, 2044 at station 3.507363 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json."
+    },
+    {
+      "id": "fuselage_section_width_st_8.78_ft",
+      "label": "Fuselage section width, station 8.78 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 3.313832,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          678,
+          457
+        ],
+        "detail": "Envelope of plan outlines 678 and 457 at station 8.781468 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json."
+    },
+    {
+      "id": "fuselage_section_height_st_8.78_ft",
+      "label": "Fuselage section height, station 8.78 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 1.724788,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          1927,
+          2692,
+          2044
+        ],
+        "detail": "Envelope of side outlines 1927, 2692, 2044 at station 8.781468 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json."
+    },
+    {
+      "id": "fuselage_section_width_st_11.15_ft",
+      "label": "Fuselage section width, station 11.15 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 3.011945,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          678,
+          457
+        ],
+        "detail": "Envelope of plan outlines 678 and 457 at station 11.147072 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json."
+    },
+    {
+      "id": "fuselage_section_height_st_11.15_ft",
+      "label": "Fuselage section height, station 11.15 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 2.709552,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          1927,
+          2692,
+          2044
+        ],
+        "detail": "Envelope of side outlines 1927, 2692, 2044 at station 11.147072 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json."
+    },
+    {
+      "id": "fuselage_section_width_st_11.19_ft",
+      "label": "Fuselage section width, station 11.19 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 3.003739,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          678,
+          457
+        ],
+        "detail": "Envelope of plan outlines 678 and 457 at station 11.188116 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json."
+    },
+    {
+      "id": "fuselage_section_height_st_11.19_ft",
+      "label": "Fuselage section height, station 11.19 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 3.010378,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          1927,
+          2692,
+          2044
+        ],
+        "detail": "Envelope of side outlines 1927, 2692, 2044 at station 11.188116 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json."
+    },
+    {
+      "id": "fuselage_section_width_st_14.02_ft",
+      "label": "Fuselage section width, station 14.02 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 2.259445,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          678,
+          457
+        ],
+        "detail": "Envelope of plan outlines 678 and 457 at station 14.019360 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json."
+    },
+    {
+      "id": "fuselage_section_height_st_14.02_ft",
+      "label": "Fuselage section height, station 14.02 ft",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 0.92558,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          1927,
+          2692,
+          2044
+        ],
+        "detail": "Envelope of side outlines 1927, 2692, 2044 at station 14.019360 ft."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json."
     },
     {
       "id": "nose_wheel_diameter_ft",

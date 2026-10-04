@@ -10,7 +10,11 @@
   "info": {
     "wing_tip_twist_le_rise_ft": -0.048537,
     "winglet_root_setback_from_wing_tip_le_ft": 0.294448,
-    "winglet_root_te_overhang_beyond_wing_tip_te_ft": 0.294448
+    "winglet_root_te_overhang_beyond_wing_tip_te_ft": 0.294448,
+    "fuselage_section_worst_width_dev_ft": 0.0,
+    "fuselage_section_worst_height_dev_ft": 1e-06,
+    "fuselage_section_worst_centre_dev_ft": 1e-06,
+    "fuselage_section_worst_station_dev_ft": 0.0
   },
   "results": [
     {
@@ -158,8 +162,8 @@
       "state": "match",
       "scored": true,
       "drawing_value": 3.425352,
-      "model_value": 3.425352,
-      "deviation": -0.0,
+      "model_value": 3.424766,
+      "deviation": -0.000586,
       "tolerance": 0.05,
       "model_parameter": "fuselage_max_dia"
     },
@@ -292,11 +296,71 @@
       "id": "fuselage_center_height_ft",
       "state": "match",
       "scored": true,
-      "drawing_value": 3.356805,
-      "model_value": 3.356805,
+      "drawing_value": 3.763863,
+      "model_value": 3.763863,
       "deviation": -0.0,
       "tolerance": 0.05,
       "model_parameter": "fuselage_z"
+    },
+    {
+      "id": "fuselage_section_width_st_6.90_ft",
+      "state": "not-measured",
+      "drawing_value": 3.424766
+    },
+    {
+      "id": "fuselage_section_height_st_6.90_ft",
+      "state": "not-measured",
+      "drawing_value": 1.737503
+    },
+    {
+      "id": "fuselage_section_width_st_3.51_ft",
+      "state": "not-measured",
+      "drawing_value": 2.954854
+    },
+    {
+      "id": "fuselage_section_height_st_3.51_ft",
+      "state": "not-measured",
+      "drawing_value": 1.955805
+    },
+    {
+      "id": "fuselage_section_width_st_8.78_ft",
+      "state": "not-measured",
+      "drawing_value": 3.313832
+    },
+    {
+      "id": "fuselage_section_height_st_8.78_ft",
+      "state": "not-measured",
+      "drawing_value": 1.724788
+    },
+    {
+      "id": "fuselage_section_width_st_11.15_ft",
+      "state": "not-measured",
+      "drawing_value": 3.011945
+    },
+    {
+      "id": "fuselage_section_height_st_11.15_ft",
+      "state": "not-measured",
+      "drawing_value": 2.709552
+    },
+    {
+      "id": "fuselage_section_width_st_11.19_ft",
+      "state": "not-measured",
+      "drawing_value": 3.003739
+    },
+    {
+      "id": "fuselage_section_height_st_11.19_ft",
+      "state": "not-measured",
+      "drawing_value": 3.010378
+    },
+    {
+      "id": "fuselage_section_width_st_14.02_ft",
+      "state": "not-measured",
+      "drawing_value": 2.259445
+    },
+    {
+      "id": "fuselage_section_height_st_14.02_ft",
+      "state": "not-measured",
+      "drawing_value": 0.92558
     },
     {
       "id": "nose_wheel_diameter_ft",

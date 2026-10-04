@@ -32,8 +32,10 @@ DIGITIZED = HERE / "COZY3V_digitized.json"
 BASELINE = HERE / "Cozy_MKIV_OpenVSP_Baseline.py"
 OUT_JSON = HERE / "dimensions.json"
 OUT_MD = HERE / "DIMENSIONS.md"
+OUT_LOFT = HERE / "body_loft.json"
 
 SCHEMA = "cozy-dimensions/1"
+LOFT_SCHEMA = "cozy-body-loft/1"
 
 # Tolerances: how far a model value may sit from the drawing value and still
 # count as "match".  Lengths are tight because the digitisation is exact for
@@ -48,6 +50,37 @@ TOLERANCE = {
 
 # Layer / view of everything that belongs to the drawing outline itself.
 OUTLINE_LAYER = "5"
+
+# A polyline segment whose station span is no more than
+# FACE_STATION_TOL and whose lateral span is at least
+# FACE_WIDTH_FT is a drawn face (the fuselage tail face):
+# its digitised corners sit a few thousandths of a foot
+# apart in station, so the face must contribute both
+# corners to the silhouette envelope.
+FACE_STATION_TOL = 0.01
+FACE_WIDTH_FT = 0.5
+
+# The fuselage side view is drawn as three edge-adjacent outlines:
+# 1927 forward body (nose to the wing/fillet junction), 2692 the
+# turtledeck ramp between the canopy aft end and the fin base, and
+# 2044 the aft body (fin and turtledeck down to the tail).  The plan
+# view draws the fuselage as 678 (forward) and 457 (aft).  The outer
+# silhouette of the body is the envelope of those outlines.
+BODY_SIDE_OUTLINE = [1927, 2692, 2044]
+BODY_PLAN_OUTLINE = [678, 457]
+
+# Reference stations where the loft is checked section by section:
+# the widest station, the nose-top peak, both ends of the turtledeck
+# ramp, the aft-body junction (deepest belly, tallest section) and the
+# tail.  The keys below are entity indices, not station numbers.
+LOFT_REFERENCE_KEYS = {
+    "widest": ("plan", 678),
+    "nose_top_peak": ("side_max_z", 1927),
+    "turtledeck_ramp_foot": ("station", 2692, "min"),
+    "turtledeck_ramp_top": ("station", 2692, "max"),
+    "aft_body_junction": ("side_min_z", 2044),
+    "tail": ("length", None),
+}
 
 
 # --------------------------------------------------------------------------
@@ -192,6 +225,246 @@ class Drawing:
 
 
 # --------------------------------------------------------------------------
+# fuselage silhouette envelope
+# --------------------------------------------------------------------------
+
+
+def _envelope_crossings(
+    points: list[tuple[float, float]], station: float
+) -> list[float]:
+    """Value coordinates where a polyline meets the vertical line
+    ``coord == station``.  The digitised polylines are stored closed
+    (first vertex repeated at the end), so iterating consecutive
+    vertex pairs walks the whole loop.  Segments that end exactly on
+    the station count, which keeps vertical faces (the aft-body
+    forward face) measurable at their own station.
+
+    A segment that runs laterally -- nearly constant ``coord`` across
+    a real width -- is a drawn face (the fuselage tail face is drawn
+    this way).  Its digitised corners can sit a few thousandths of a
+    foot apart in ``coord``, so a station line through the face would
+    otherwise clip a single corner and read the width as zero.  Such
+    a segment contributes both corners at every station it spans."""
+    values: list[float] = []
+    for a, b in zip(points, points[1:]):
+        ca, va = a
+        cb, vb = b
+        if abs(cb - ca) < 1e-12:
+            if abs(ca - station) < 1e-9:
+                values.append(va)
+                values.append(vb)
+            continue
+        if (
+            abs(cb - ca) <= FACE_STATION_TOL
+            and abs(vb - va) >= FACE_WIDTH_FT
+        ):
+            if (
+                min(ca, cb) - FACE_STATION_TOL
+                <= station
+                <= max(ca, cb) + FACE_STATION_TOL
+            ):
+                values.append(va)
+                values.append(vb)
+            continue
+        lo, hi = (ca, cb) if ca <= cb else (cb, ca)
+        if lo - 1e-9 <= station <= hi + 1e-9:
+            t = (station - ca) / (cb - ca)
+            t = 0.0 if t < 0.0 else (1.0 if t > 1.0 else t)
+            values.append(va + t * (vb - va))
+    return values
+
+
+def side_silhouette(
+    drawing: Drawing, station: float
+) -> tuple[float, float]:
+    """(lowest, highest) point of the side-view body envelope at
+    ``station``, in feet above the side-view ground line."""
+    nose = drawing.nose_station_side_ft()
+    ground = drawing.side_ground_ft()
+    heights: list[float] = []
+    for index in BODY_SIDE_OUTLINE:
+        pts = [
+            (p[1] - nose, ground - p[0]) for p in drawing.points(index)
+        ]
+        heights.extend(_envelope_crossings(pts, station))
+    if not heights:
+        raise ValueError(
+            f"no side-view body outline crosses station {station}"
+        )
+    return min(heights), max(heights)
+
+
+def plan_silhouette(
+    drawing: Drawing, station: float
+) -> tuple[float, float]:
+    """(inboard, outboard) lateral extent of the plan-view body
+    envelope at ``station``, in raw plan-view x coordinates."""
+    nose = drawing.nose_station_top_ft()
+    laterals: list[float] = []
+    for index in BODY_PLAN_OUTLINE:
+        pts = [(p[1] - nose, p[0]) for p in drawing.points(index)]
+        laterals.extend(_envelope_crossings(pts, station))
+    if not laterals:
+        raise ValueError(
+            f"no plan-view body outline crosses station {station}"
+        )
+    return min(laterals), max(laterals)
+
+
+def silhouette_extrema(drawing: Drawing) -> tuple[float, float]:
+    """(lowest, highest) point of the side-view body silhouette.
+
+    The envelope is piecewise linear with breakpoints only at
+    outline vertices, so its extrema are attained at vertex
+    stations and scanning those stations is exact.
+    """
+    nose = drawing.nose_station_side_ft()
+    stations = sorted({
+        p[1] - nose
+        for index in BODY_SIDE_OUTLINE
+        for p in drawing.points(index)
+    })
+    lows, highs = [], []
+    for station in stations:
+        low, high = side_silhouette(drawing, station)
+        lows.append(low)
+        highs.append(high)
+    return min(lows), max(highs)
+
+
+def _widest_plan_station(drawing: Drawing) -> float:
+    """Station of the widest plan-view body section.  The width is
+    piecewise linear between vertices, so the maximum is at a
+    vertex station of either plan outline."""
+    nose = drawing.nose_station_top_ft()
+    stations = sorted({
+        p[1] - nose
+        for index in BODY_PLAN_OUTLINE
+        for p in drawing.points(index)
+    })
+    best_station = 0.0
+    best_width = -1.0
+    for station in stations:
+        lo, hi = plan_silhouette(drawing, station)
+        if hi - lo > best_width:
+            best_width = hi - lo
+            best_station = station
+    return best_station
+
+
+def fuselage_profile_stations(drawing: Drawing, length: float) -> list[float]:
+    """Uniform station grid plus the stations where the drawn
+    silhouette changes slope or joins the next outline, so the
+    loft follows the drawn contour instead of smoothing across
+    the joints.  A feature station that lands within 1e-3 ft
+    of a grid station replaces it: the section then carries
+    the vertex value exactly, whereas a separate section that
+    close would make the spline overshoot."""
+    cells = 31  # ~0.45 ft
+    merged = [k * length / cells for k in range(cells + 1)]
+    nose_side = drawing.nose_station_side_ft()
+    nose_top = drawing.nose_station_top_ft()
+
+    def vertex_station(index: int, pick: str) -> float:
+        pts = drawing.points(index)
+        ground = drawing.side_ground_ft()
+        heights = [ground - p[0] for p in pts]
+        if pick == "max_z":
+            return pts[heights.index(max(heights))][1] - nose_side
+        if pick == "min_z":
+            return pts[heights.index(min(heights))][1] - nose_side
+        if pick == "min":
+            return min(p[1] for p in pts) - nose_side
+        if pick == "max":
+            return max(p[1] for p in pts) - nose_side
+        raise ValueError(f"unknown pick {pick!r}")
+
+    keys = [
+        _widest_plan_station(drawing),
+        vertex_station(1927, "max_z"),
+        vertex_station(2692, "min"),
+        vertex_station(2692, "max_z"),
+        vertex_station(2692, "max"),
+        vertex_station(1927, "max"),
+        vertex_station(2044, "min_z"),
+        length,
+    ]
+    for key in keys:
+        hits = [i for i, s in enumerate(merged) if abs(key - s) <= 1e-3]
+        if hits:
+            for i in hits:
+                merged[i] = key
+        else:
+            merged.append(key)
+    return sorted(merged)
+
+
+def fuselage_profile(
+    drawing: Drawing, stations: list[float]
+) -> list[dict]:
+    """Outer silhouette of the fuselage at each station: plan-view
+    width and side-view top/bottom heights, above the ground line
+    and from the plan-view nose."""
+    sections: list[dict] = []
+    for station in stations:
+        low, high = side_silhouette(drawing, station)
+        lat_lo, lat_hi = plan_silhouette(drawing, station)
+        sections.append({
+            "station_ft": round(station, 6),
+            "half_width_ft": round((lat_hi - lat_lo) / 2.0, 6),
+            "width_ft": round(lat_hi - lat_lo, 6),
+            "centre_y_offset_ft": round((lat_hi + lat_lo) / 2.0, 6),
+            "z_top_ft": round(high, 6),
+            "z_bot_ft": round(low, 6),
+            "height_ft": round(high - low, 6),
+            "centre_z_ft": round((high + low) / 2.0, 6),
+        })
+    return sections
+
+
+def loft_reference_stations(
+    drawing: Drawing, profile: list[dict], length: float
+) -> list[dict]:
+    """The stations at which verify_geometry.py re-measures the
+    model fuselage section width and height against the loft."""
+    nose_side = drawing.nose_station_side_ft()
+    ground = drawing.side_ground_ft()
+    nose_peak = drawing.points(1927)
+    peak_station = nose_peak[
+        [ground - p[0] for p in nose_peak].index(
+            max(ground - p[0] for p in nose_peak)
+        )
+    ][1] - nose_side
+
+    def nearest(station: float) -> dict:
+        return min(profile, key=lambda s: abs(s["station_ft"] - station))
+
+    wanted = [
+        ("widest", _widest_plan_station(drawing)),
+        ("nose_top_peak", peak_station),
+        ("turtledeck_ramp_foot",
+         min(p[1] for p in drawing.points(2692)) - nose_side),
+        ("turtledeck_ramp_top",
+         max(p[1] for p in drawing.points(2692)) - nose_side),
+        ("aft_body_junction",
+         min(drawing.points(2044),
+             key=lambda p: ground - p[0])[1] - nose_side),
+        ("tail_face", length),
+    ]
+    refs = []
+    for name, station in wanted:
+        section = nearest(station)
+        refs.append({
+            "name": name,
+            "station_ft": round(station, 6),
+            "loft_station_ft": section["station_ft"],
+            "width_ft": section["width_ft"],
+            "height_ft": section["height_ft"],
+        })
+    return refs
+
+
+# --------------------------------------------------------------------------
 # model parameter access
 # --------------------------------------------------------------------------
 
@@ -268,7 +541,7 @@ def source(
     }
 
 
-def build_rows(drawing: Drawing, model: dict) -> list[dict]:
+def build_rows(drawing: Drawing, model: dict, loft: dict) -> list[dict]:
     rows: list[dict] = []
 
     def add(
@@ -1099,30 +1372,103 @@ def build_rows(drawing: Drawing, model: dict) -> list[dict]:
 
     add(
         "fuselage_center_height_ft",
-        "Fuselage section centre height above ground",
+        "Fuselage centre height above ground",
         "ft",
         "polyline-measured",
-        _mid(drawing.side_height(1927)),
-        "Mid height of side-view fuselage outline 1927 above ground line 3217.",
-        source(drawing, "side", [1927, 3217], "Forward fuselage outline of the side view."),
+        loft["centre_z_ft"],
+        "Mid-height of the full side-view fuselage silhouette: the "
+        f"lowest belly point of outline 2044 ({loft['min_z_ft']:.6f} ft) "
+        f"and the highest turtledeck point of outline 2692 "
+        f"({loft['max_z_ft']:.6f} ft), averaged.",
+        source(
+            drawing,
+            "side",
+            BODY_SIDE_OUTLINE,
+            "Envelope of the three side-view body outlines; the "
+            "centre height is the mid-height of that envelope.",
+        ),
         model_parameter="fuselage_z",
         cross_checks=[
+            {
+                "label": "forward fuselage 1927 mid height",
+                "value_ft": round(_mid(drawing.side_height(1927)), 6),
+                "entities": [1927],
+            },
+            {
+                "label": "rear fuselage 2044 mid height",
+                "value_ft": round(_mid(drawing.side_height(2044)), 6),
+                "entities": [2044],
+            },
             {
                 "label": "front view fuselage section 1148",
                 "value_ft": round(_mid(drawing.front_height(1148)), 6),
                 "entities": [1148],
             },
-            {
-                "label": "rear fuselage 2044",
-                "value_ft": round(_mid(drawing.side_height(2044)), 6),
-                "entities": [2044],
-            },
         ],
         note=(
-            "The model fuselage cross sections are still scaled defaults, so only "
-            "the datum can be matched, not the section shape."
+            "The fuselage is lofted from the side-view silhouette of "
+            "outlines 1927 (forward body), 2692 (turtledeck ramp) and "
+            "2044 (aft body), so the model centre height is the "
+            "mid-height of the whole silhouette, not of the forward "
+            "body alone. The three outline mid heights span "
+            f"{_mid(drawing.side_height(1927)):.4f} to "
+            f"{_mid(drawing.side_height(2044)):.4f} ft and the front "
+            "view section 1148 sits "
+            f"{abs(_mid(drawing.front_height(1148)) - loft['centre_z_ft']):.3f} "
+            "ft from the side-view silhouette centre; the side view "
+            "carries the explicit ground line and is the height datum."
         ),
     )
+
+    # -- fuselage section reference stations (loft checks) --------
+    for ref in loft["references"]:
+        station = ref["station_ft"]
+        label = f"at station {station:.4f} ft from the nose"
+        add(
+            f"fuselage_section_width_st_{station:.2f}_ft",
+            f"Fuselage section width, station {station:.2f} ft",
+            "ft",
+            "polyline-measured",
+            ref["width_ft"],
+            f"Width of the plan-view body envelope of outlines "
+            f"{BODY_PLAN_OUTLINE[0]}/{BODY_PLAN_OUTLINE[1]} {label}.",
+            source(
+                drawing,
+                "top",
+                BODY_PLAN_OUTLINE,
+                f"Envelope of plan outlines {BODY_PLAN_OUTLINE[0]} and "
+                f"{BODY_PLAN_OUTLINE[1]} at station {station:.6f} ft.",
+            ),
+            model_parameter=None,
+            note=(
+                "Reference station for the plan-derived fuselage loft; "
+                "verify_geometry.py re-measures the model section width "
+                "at this station against body_loft.json."
+            ),
+        )
+        add(
+            f"fuselage_section_height_st_{station:.2f}_ft",
+            f"Fuselage section height, station {station:.2f} ft",
+            "ft",
+            "polyline-measured",
+            ref["height_ft"],
+            f"Height of the side-view body envelope of outlines "
+            f"{'/'.join(str(i) for i in BODY_SIDE_OUTLINE)} {label}.",
+            source(
+                drawing,
+                "side",
+                BODY_SIDE_OUTLINE,
+                f"Envelope of side outlines "
+                f"{', '.join(str(i) for i in BODY_SIDE_OUTLINE)} at "
+                f"station {station:.6f} ft.",
+            ),
+            model_parameter=None,
+            note=(
+                "Reference station for the plan-derived fuselage loft; "
+                "verify_geometry.py re-measures the model section height "
+                "at this station against body_loft.json."
+            ),
+        )
 
     # -- side view wheel geometry (reference only) -------------------------
     add(
@@ -1458,13 +1804,85 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--markdown", type=Path, default=OUT_MD, help="path of DIMENSIONS.md"
     )
+    parser.add_argument(
+        "--loft", type=Path, default=OUT_LOFT, help="path of body_loft.json"
+    )
     args = parser.parse_args(argv)
 
     record = json.loads(DIGITIZED.read_text(encoding="utf-8"))
     drawing = Drawing(record)
     model = load_model_parameters(BASELINE)
 
-    rows = build_rows(drawing, model)
+    length = drawing.bbox(457)[3] - drawing.nose_station_top_ft()
+    stations = fuselage_profile_stations(drawing, length)
+    sections = fuselage_profile(drawing, stations)
+    min_z, max_z = silhouette_extrema(drawing)
+    references = loft_reference_stations(drawing, sections, length)
+    loft = {
+        "schema": LOFT_SCHEMA,
+        "source": {
+            "file": DXF_NAME,
+            "sha256": sha256_of(HERE / DXF_NAME),
+            "digitised_record": DIGITIZED.name,
+            "digitised_sha256": sha256_of(DIGITIZED),
+        },
+        "units": {"length": "ft"},
+        "datums": {
+            "station_origin": "plan-view nose outline 678",
+            "height_origin": "side-view ground line 3217",
+        },
+        "outlines": {
+            "side": BODY_SIDE_OUTLINE,
+            "plan": BODY_PLAN_OUTLINE,
+        },
+        "length_ft": round(length, 6),
+        "grid": {
+            "cells": 31,
+            "target_spacing_ft": round(length / 31.0, 6),
+            "section_count": len(sections),
+            "key_stations": (
+                "widest, nose-top peak, turtledeck ramp foot and "
+                "top, forward-body aft end, aft-body junction, "
+                "tail face, tail"
+            ),
+        },
+        "extrema": {
+            "min_z_ft": round(min_z, 6),
+            "max_z_ft": round(max_z, 6),
+            "centre_z_ft": round((min_z + max_z) / 2.0, 6),
+        },
+        "sections": sections,
+        "references": references,
+        "method": (
+            "Outer silhouette envelope of the side-view outlines "
+            "1927/2692/2044 (height) and the plan-view outlines "
+            "678/457 (width), sampled on a uniform station grid "
+            "with the slope-change and outline-junction stations "
+            "added, so the OpenVSP loft follows the drawn contour."
+        ),
+        "limitations": [
+            "Section heights follow the side view; the front-view "
+            "section 1148 is drawn taller than the side view at the "
+            "same station",
+            "The drawn lateral centre of the plan outlines wanders "
+            "about 0.05 ft either side of the plan centreline; the "
+            "loft is centred on the symmetry plane instead",
+            "The aft-body forward face is near-vertical in the "
+            "drawing; the loft ramps it between the two stations "
+            "that bracket it",
+        ],
+    }
+    args.loft.write_text(
+        json.dumps(loft, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+
+    rows = build_rows(drawing, model, {
+        "centre_z_ft": loft["extrema"]["centre_z_ft"],
+        "min_z_ft": loft["extrema"]["min_z_ft"],
+        "max_z_ft": loft["extrema"]["max_z_ft"],
+        "references": loft["references"],
+    })
     counts = {"match": 0, "off": 0, "no-model-value": 0}
     for row in rows:
         counts[row["status"]] += 1
@@ -1480,6 +1898,7 @@ def main(argv: list[str] | None = None) -> int:
         },
         "units": {"length": "ft", "area": "ft2", "angle": "deg"},
         "scale": record["scale"],
+        "body_loft": args.loft.name,
         "datums": {
             "x_origin": "nose tip",
             "x_axis": "+x aft",
@@ -1509,7 +1928,11 @@ def main(argv: list[str] | None = None) -> int:
     write_markdown(args.markdown, payload)
 
     print(f"rows: {len(rows)}  {counts}")
-    print(f"wrote {args.json.name} and {args.markdown.name}")
+    print(
+        f"loft: {len(sections)} sections, centre z "
+        f"{loft['extrema']['centre_z_ft']:.6f} ft"
+    )
+    print(f"wrote {args.json.name}, {args.markdown.name} and {args.loft.name}")
     return 0
 
 

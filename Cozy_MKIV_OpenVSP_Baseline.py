@@ -20,8 +20,12 @@ Datum: X = 0 on the plan-view nose outline, Z = 0 on the ground line
 (LINE 3217 of the side view). Every station below is measured from the nose,
 every height above the ground.
 
-Every number in P is read from dimensions.json, produced by measure_dxf.py
-from COZY3V.DXF. Re-run measure_dxf.py after changing P.
+Every number in P is read from dimensions.json, produced by
+measure_dxf.py from COZY3V.DXF. The fuselage loft sections are
+read from body_loft.json (schema cozy-body-loft/1), written by
+the same script from the side-view silhouette of outlines
+1927/2692/2044 and the plan-view width of outlines 678/457.
+Re-run measure_dxf.py after changing P.
 """
 
 import hashlib
@@ -42,9 +46,18 @@ HERE = Path(__file__).resolve().parent
 OUTFILE = HERE / "Cozy_MKIV_Baseline.vsp3"
 REPORT = OUTFILE.with_suffix(".validation.json")
 DIMENSIONS = HERE / "dimensions.json"
+BODY_LOFT = HERE / "body_loft.json"
 AIRFOILS = HERE / "airfoil"
 E1230 = AIRFOILS / "e1230.dat"
 R1145MS = AIRFOILS / "r1145ms.dat"
+
+LOFT = json.loads(BODY_LOFT.read_text(encoding="utf-8"))
+LOFT_LENGTH = float(LOFT["length_ft"])
+LOFT_SECTIONS = [
+    (float(s["station_ft"]), float(s["width_ft"]),
+     float(s["z_top_ft"]), float(s["z_bot_ft"]))
+    for s in LOFT["sections"]
+]
 
 P = {
     "overall_length": 16.916667,
@@ -60,7 +73,7 @@ P = {
     "canard_taper": 1.0,
     "fuselage_length": 14.019360,
     "fuselage_max_dia": 3.425352,
-    "fuselage_z": 3.356805,
+    "fuselage_z": 3.763863,
     "wing_x": 7.883885,
     "wing_z": 3.769542,
     "canard_x": 2.139451,
@@ -158,23 +171,56 @@ def wing(name, x, z, span, root_value, sweep=0.0, taper=1.0, symmetric=True,
     return gid
 
 
-def body(name, x, z, length, diameter, yrot=0.0):
+def body(name, length, sections):
+    """Fuselage lofted from the plan-derived silhouette.
+
+    ``sections`` is a list of ``(station_ft, width_ft,
+    z_top_ft, z_bot_ft)`` tuples measured from the drawing,
+    starting at the nose station 0 and ending at ``length``.
+    Each section is an ellipse centred on the symmetry
+    plane; its height and its vertical offset are carried
+    by the section itself, so the loft follows the
+    side-view silhouette instead of a straight axis.  The
+    nose is a point; the tail is the drawn flat aft face,
+    carried as a full ellipse at the last station.
+    """
     gid = named_geom("FUSELAGE", name)
-    place(gid, x, 0.0, z, 0.0, yrot, 0.0)
+    place(gid, 0.0, 0.0, 0.0)
     setp(gid, "Length", "Design", length)
     surf = vsp.GetXSecSurf(gid, 0)
-    sections = [vsp.GetXSec(surf, i) for i in range(vsp.GetNumXSec(surf))]
-    dimensions = [(vsp.GetXSecWidth(s), vsp.GetXSecHeight(s)) for s in sections]
-    check_errors("Read fuselage cross sections")
-    maximum = max(max(width, height) for width, height in dimensions)
-    if maximum <= 0.0:
-        raise RuntimeError("Fuselage has no nonzero cross sections")
-    factor = diameter / maximum
-    for section, (width, height) in zip(sections, dimensions):
-        if vsp.GetXSecShape(section) != vsp.XS_POINT:
-            vsp.SetXSecWidthHeight(section, width * factor, height * factor)
-    check_errors("Scale fuselage cross sections")
+    # A new fuselage carries five sections: a point at each
+    # end and three ellipses between them.  InsertXSec adds
+    # ellipses ahead of the tail point, so growing the list
+    # yields point / ellipse* / point.
+    while vsp.GetNumXSec(surf) < len(sections):
+        vsp.InsertXSec(gid, vsp.GetNumXSec(surf) - 2, vsp.XS_ELLIPSE)
+        check_errors("Insert fuselage section")
+    for index, (station, width, z_top, z_bot) in enumerate(sections):
+        section = vsp.GetXSec(surf, index)
+        height = z_top - z_bot
+        # XLocPercent is the station as a fraction of the
+        # length; ZLocPercent lifts the section centre off
+        # the axis by the same fraction, which is what lets
+        # the loft follow the rising fuselage centre line.
+        setp(section, "XLocPercent", "XSec", station / length)
+        setp(section, "ZLocPercent", "XSec",
+             (z_top + z_bot) / 2.0 / length)
+        if index == len(sections) - 1:
+            # The built-in tail section is a point.  Set its
+            # position parms first, then reshape it: the
+            # reshape replaces the section container and the
+            # parms stop being reachable, but the values
+            # already written survive, and the width and
+            # height can still be set on the new shape.
+            vsp.ChangeXSecShape(surf, index, vsp.XS_ELLIPSE)
+            check_errors(f"Reshape fuselage tail section {index}")
+            section = vsp.GetXSec(surf, index)
+        if width > 0.0 and height > 0.0:
+            vsp.SetXSecWidthHeight(section, width, height)
+            check_errors(f"Size fuselage section {index}")
+        vsp.Update()
     vsp.Update()
+    check_errors("Build fuselage loft")
     return gid
 
 
@@ -198,8 +244,7 @@ def disk(name, x, y, z, diameter, yrot=0.0):
 vsp.ClearVSPModel()
 
 # 1) Principal lifting surfaces
-fuselage = body("Fuselage — plan-derived loft required", 0.0, P["fuselage_z"],
-                P["fuselage_length"], P["fuselage_max_dia"])
+fuselage = body("Fuselage — plan-derived loft", LOFT_LENGTH, LOFT_SECTIONS)
 main_wing = wing("Main Wing", P["wing_x"], P["wing_z"], P["main_span"],
                  P["main_area"], sweep=P["main_le_sweep_deg"],
                  taper=P["main_taper"], airfoil=E1230)
@@ -340,18 +385,34 @@ def validate_model():
     verify("canard_root_le_z_ft", root.z(), P["canard_z"], 1e-6)
     verify("canard_leading_edge_x_offset_ft", tip.x() - root.x(), 0.0, 1e-6)
 
-    gid = by_name["Fuselage — plan-derived loft required"]
+    gid = by_name["Fuselage — plan-derived loft"]
     verify("fuselage_length_ft", vsp.GetParmVal(gid, "Length", "Design"), P["fuselage_length"])
     surf = vsp.GetXSecSurf(gid, 0)
-    maximum = max(
-        max(vsp.GetXSecWidth(vsp.GetXSec(surf, i)), vsp.GetXSecHeight(vsp.GetXSec(surf, i)))
-        for i in range(vsp.GetNumXSec(surf))
+    maximum = 0.0
+    for index in range(vsp.GetNumXSec(surf)):
+        section = vsp.GetXSec(surf, index)
+        maximum = max(
+            maximum,
+            vsp.GetXSecWidth(section),
+            vsp.GetXSecHeight(section),
+        )
+    loft_maximum = max(
+        max(s["width_ft"], s["height_ft"]) for s in LOFT["sections"]
     )
-    verify("fuselage_max_section_dimension_ft", maximum, P["fuselage_max_dia"])
+    verify("fuselage_max_section_dimension_ft", maximum, loft_maximum, 1e-6)
     lo, hi = box(gid)
     verify("fuselage_nose_x_ft", lo[0], 0.0, 1e-6)
-    verify("fuselage_tail_x_ft", hi[0], P["fuselage_length"], 1e-6)
-    verify("fuselage_centre_z_ft", (lo[2] + hi[2]) / 2.0, P["fuselage_z"], 1e-6)
+    verify("fuselage_tail_x_ft", hi[0], LOFT_LENGTH, 1e-6)
+    # The lofted surface can overshoot the sections by a
+    # small amount where the centre line curves, so the
+    # bounding-box centre carries a tolerance instead of an
+    # exact equality.
+    verify(
+        "fuselage_centre_z_ft",
+        (lo[2] + hi[2]) / 2.0,
+        LOFT["extrema"]["centre_z_ft"],
+        0.05,
+    )
 
     lows = [box(g)[0] for g in geoms]
     highs = [box(g)[1] for g in geoms]
@@ -366,13 +427,16 @@ def validate_model():
 
 vsp.Update()
 check_errors("Build model")
-before_save = validate_model()
-if not all(check["passed"] for check in before_save):
-    raise RuntimeError(f"Geometry validation failed before saving: {before_save}")
 vsp.WriteVSPFile(str(OUTFILE), vsp.SET_ALL)
 check_errors("Write model")
 if not OUTFILE.is_file() or OUTFILE.stat().st_size == 0:
     raise RuntimeError("OpenVSP did not create a nonempty model file")
+# InsertXSec leaves the in-session surface mesh stale: the
+# bounding box and the surface points lag the section table
+# even after repeated Update calls, while the saved file
+# carries the correct sections.  Every surface-based check
+# therefore runs against the reloaded model, whose surface
+# is rebuilt from the file.
 vsp.ClearVSPModel()
 vsp.ReadVSPFile(str(OUTFILE))
 check_errors("Read saved model")
@@ -386,23 +450,23 @@ report = {
     "model": OUTFILE.name,
     "units": {"length": "ft", "area": "ft^2", "angle": "deg"},
     "parameters": P,
-    "input_provenance": {
-        "drawing": "COZY3V.DXF",
-        "drawing_sha256": hashlib.sha256((HERE / "COZY3V.DXF").read_bytes()).hexdigest().upper(),
-        "dimension_table": "dimensions.json (schema cozy-dimensions/1), written by measure_dxf.py",
-        "datum": "X = 0 on the plan-view nose outline 678; Z = 0 on side-view ground line 3217",
-        "airfoils": {
-            "main_wing_and_winglet": "airfoil/e1230.dat",
-            "canard": "airfoil/r1145ms.dat",
+        "input_provenance": {
+            "drawing": "COZY3V.DXF",
+            "drawing_sha256": hashlib.sha256((HERE / "COZY3V.DXF").read_bytes()).hexdigest().upper(),
+            "dimension_table": "dimensions.json (schema cozy-dimensions/1), written by measure_dxf.py",
+            "body_loft": "body_loft.json (schema cozy-body-loft/1), written by measure_dxf.py from the side-view silhouette of outlines 1927/2692/2044 and the plan-view width of outlines 678/457",
+            "datum": "X = 0 on the plan-view nose outline 678; Z = 0 on side-view ground line 3217",
+            "airfoils": {
+                "main_wing_and_winglet": "airfoil/e1230.dat",
+                "canard": "airfoil/r1145ms.dat",
+            },
+            "winglet_sweep": "Solved at build time from the winglet root chord so the tip trailing edge lands on winglet_aft_station",
+            "main_tip_twist_deg": "Provisional -6.5 deg; not established by the drawing",
+            "internal_envelopes": "Inherited placeholder stations and sizes, shifted to the ground datum",
+            "gear": "Wheel-envelope pods sized by the drawn wheel diameters, resting on the ground datum",
         },
-        "winglet_sweep": "Solved at build time from the winglet root chord so the tip trailing edge lands on winglet_aft_station",
-        "main_tip_twist_deg": "Provisional -6.5 deg; not established by the drawing",
-        "internal_envelopes": "Inherited placeholder stations and sizes, shifted to the ground datum",
-        "gear": "Wheel-envelope pods sized by the drawn wheel diameters, resting on the ground datum",
-    },
     "validation_scope": "Parameter consistency and serialization only; not aerodynamic validation",
     "passed": passed,
-    "before_save": before_save,
     "after_reload": after_save,
     "limitations": [
         "Dimensions are traced to COZY3V.DXF through dimensions.json, not to a licensed plan set",
@@ -410,7 +474,10 @@ report = {
         "The winglet has no cant; the front view shows roughly 4 deg of inward lean that is not modelled",
         "The drawing puts the winglet root leading edge 0.292141 ft aft of the straight-line wing tip leading edge, "
         "so the winglet root and the wing tip sections only partly overlap chordwise",
-        "Fuselage retains scaled default sections, not a plan-derived loft",
+        "The fuselage is lofted from the side-view silhouette of outlines 1927/2692/2044 with elliptical sections; the front-view section 1148 is drawn about 0.18 ft taller than the side view at the same station, so section heights follow the side view",
+        "The aft-body junction near station 11.18 ft is drawn as a near-vertical forward face; the loft ramps it between the stations 11.1769 and 11.1881 ft",
+        "The plan view ends the fuselage in a flat aft face 2.2594 ft wide by 0.9256 ft tall at station 14.0194 ft; the loft carries that face as a full ellipse section, so the aft end is an open ring rather than a point",
+        "The drawn lateral centre of the plan outlines wanders about 0.05 ft either side of the plan centreline; the loft is centred on the symmetry plane instead",
         "Spinner, cowl, gear, strakes and internal volumes are placeholder bodies, not structure",
         "Propeller disc is a reference only; no propulsion or aeroelastic model",
         "Airfoil sections are loaded from files but incidence, twist and camber effects are not validated",
@@ -422,6 +489,6 @@ REPORT.write_text(json.dumps(report, indent=2, ensure_ascii=True) + "\n", encodi
 if not passed:
     raise RuntimeError(f"Saved model validation failed; see {REPORT}")
 print("Created", OUTFILE)
-print(f"PASS: {len(before_save)} pre-save and {len(after_save)} post-reload checks")
+print(f"PASS: {len(after_save)} post-reload checks")
 print("Validation report:", REPORT)
 print("NOT VALIDATED FOR PERFORMANCE, MANUFACTURING OR FLIGHT")

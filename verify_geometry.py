@@ -20,6 +20,12 @@ Additional structural criteria, fixed up front:
    reported as INFO rather than scored.
 4. Canard XSec_1 sweep is 0 degrees, main wing tip twist is -6.5 degrees.
 5. Zero OpenVSP API errors.
+6. The fuselage surface passes through every section of body_loft.json: the
+   surface parameter runs section-by-section (u = index / (count - 1)), so
+   sampling the ring at each section's u must reproduce that section's width,
+   height, centre height and station within 0.001 ft, and the six drawing
+   reference stations (widest section, nose top peak, turtledeck ramp foot and
+   top, aft body junction, tail face) must carry their drawn sizes.
 
 Units: ft, deg. Read-only: the model file is never modified here.
 """
@@ -139,11 +145,68 @@ def main():
         structural(f"{name}: root_z_equals_wing_plane_z",
                    abs(root[2] - wing_plane_z), 0.0, GEOM_TOL)
 
+    # Fuselage loft fidelity: the surface parameter runs
+    # section-by-section (u = index / (count - 1)) rather
+    # than by XLocPercent, so each profile section of
+    # body_loft.json is verified by sampling the ring at
+    # its own u and comparing width, height, centre
+    # height and station against the table.
+    loft = json.loads((HERE / "body_loft.json").read_text(encoding="utf-8"))
+    loft_sections = loft["sections"]
+    count = len(loft_sections)
+    worst = {"width": 0.0, "height": 0.0, "centre": 0.0, "station": 0.0}
+    rings = []
+    for index, section in enumerate(loft_sections):
+        u = index / (count - 1)
+        xs, ys, zs = [], [], []
+        for k in range(65):
+            p = vsp.CompPnt01(fuselage, 0, u, k / 64.0)
+            xs.append(p.x())
+            ys.append(p.y())
+            zs.append(p.z())
+        rings.append((min(xs), max(xs), min(ys), max(ys), min(zs), max(zs)))
+        worst["width"] = max(worst["width"],
+                             abs((rings[-1][3] - rings[-1][2]) - section["width_ft"]))
+        worst["height"] = max(worst["height"],
+                              abs((rings[-1][5] - rings[-1][4]) - section["height_ft"]))
+        worst["centre"] = max(worst["centre"],
+                              abs((rings[-1][4] + rings[-1][5]) / 2.0 - section["centre_z_ft"]))
+        worst["station"] = max(worst["station"],
+                               abs(rings[-1][0] - section["station_ft"]),
+                               abs(rings[-1][1] - section["station_ft"]))
+    SECTION_TOL = 0.001
+    structural("fuselage_section_widths_match_drawing", worst["width"], 0.0, SECTION_TOL)
+    structural("fuselage_section_heights_match_drawing", worst["height"], 0.0, SECTION_TOL)
+    structural("fuselage_section_centres_match_drawing", worst["centre"], 0.0, SECTION_TOL)
+    structural("fuselage_section_stations_match_drawing", worst["station"], 0.0, SECTION_TOL)
+
+    # The six reference stations of the drawing are profile
+    # sections; their rings must carry the drawn sizes.
+    for ref in loft["references"]:
+        index = min(range(count),
+                    key=lambda i: abs(loft_sections[i]["station_ft"] - ref["station_ft"]))
+        ring = rings[index]
+        structural(f"fuselage_ref_{ref['name']}_width_ft",
+                   ring[3] - ring[2], ref["width_ft"], SECTION_TOL)
+        structural(f"fuselage_ref_{ref['name']}_height_ft",
+                   ring[5] - ring[4], ref["height_ft"], SECTION_TOL)
+
+    tail = rings[-1]
+    tail_section = loft_sections[-1]
+    structural("fuselage_tail_face_z_bottom_ft", tail[4], tail_section["z_bot_ft"], SECTION_TOL)
+    structural("fuselage_tail_face_z_top_ft", tail[5], tail_section["z_top_ft"], SECTION_TOL)
+    structural("fuselage_z_min_ft", box(fuselage)[0][2], loft["extrema"]["min_z_ft"], SECTION_TOL)
+    structural("fuselage_z_max_ft", box(fuselage)[1][2], loft["extrema"]["max_z_ft"], SECTION_TOL)
+
     info = {
         "wing_tip_twist_le_rise_ft": tip_le[2] - wing_plane_z,
         "winglet_root_setback_from_wing_tip_le_ft": winglet_root[0] - tip_le[0],
         "winglet_root_te_overhang_beyond_wing_tip_te_ft":
             point(winglet, 0.0, 0.0)[0] - tip_te[0],
+        "fuselage_section_worst_width_dev_ft": worst["width"],
+        "fuselage_section_worst_height_dev_ft": worst["height"],
+        "fuselage_section_worst_centre_dev_ft": worst["centre"],
+        "fuselage_section_worst_station_dev_ft": worst["station"],
     }
     for key, value in info.items():
         print(f"INFO {key}: {value:.6f}")

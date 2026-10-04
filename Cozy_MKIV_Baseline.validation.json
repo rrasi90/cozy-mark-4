@@ -1,8 +1,8 @@
 {
-  "timestamp_utc": "2026-10-04T18:03:06.236949+00:00",
+  "timestamp_utc": "2026-10-04T21:24:01.159056+00:00",
   "openvsp_version": "OpenVSP 3.51.2",
-  "source_sha256": "2da4d1e7863040b020365eee2653acf15dba822b0561c0c37b448b12d28c31a0",
-  "model_sha256": "13073a800385cebc8193fcd94a8aa0acf7358190ea750bf70fa898f640e5f1ad",
+  "source_sha256": "a484f23882cc3d5828e8788ed5e6e3e0ca6d4b5a6e6bf26c0eb4235faadf6e2a",
+  "model_sha256": "31a81f59d279bc2268c0f55f277ec91bb16c69d809f90689ac6586ca6e159986",
   "model": "Cozy_MKIV_Baseline.vsp3",
   "units": {
     "length": "ft",
@@ -23,7 +23,7 @@
     "canard_taper": 1.0,
     "fuselage_length": 14.01936,
     "fuselage_max_dia": 3.425352,
-    "fuselage_z": 3.356805,
+    "fuselage_z": 3.763863,
     "wing_x": 7.883885,
     "wing_z": 3.769542,
     "canard_x": 2.139451,
@@ -49,6 +49,7 @@
     "drawing": "COZY3V.DXF",
     "drawing_sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
     "dimension_table": "dimensions.json (schema cozy-dimensions/1), written by measure_dxf.py",
+    "body_loft": "body_loft.json (schema cozy-body-loft/1), written by measure_dxf.py from the side-view silhouette of outlines 1927/2692/2044 and the plan-view width of outlines 678/457",
     "datum": "X = 0 on the plan-view nose outline 678; Z = 0 on side-view ground line 3217",
     "airfoils": {
       "main_wing_and_winglet": "airfoil/e1230.dat",
@@ -61,365 +62,6 @@
   },
   "validation_scope": "Parameter consistency and serialization only; not aerodynamic validation",
   "passed": true,
-  "before_save": [
-    {
-      "name": "geometry_count",
-      "actual": 17,
-      "expected": 17,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "unique_geometry_names",
-      "actual": 17,
-      "expected": 17,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Main Wing: span_ft",
-      "actual": 28.125,
-      "expected": 28.125,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Main Wing: area_ft2",
-      "actual": 88.552617,
-      "expected": 88.552617,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Main Wing: derived_aspect",
-      "actual": 8.932718781196495,
-      "expected": 8.932718781196495,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Canard \u2014 Roncz 1145MS verification needed: span_ft",
-      "actual": 12.563641,
-      "expected": 12.563641,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Canard \u2014 Roncz 1145MS verification needed: area_ft2",
-      "actual": 12.922935,
-      "expected": 12.922935,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Canard \u2014 Roncz 1145MS verification needed: derived_aspect",
-      "actual": 12.214336385417168,
-      "expected": 12.214336385417168,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Left main-wing tip winglet: span_ft",
-      "actual": 4.525088,
-      "expected": 4.525088,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Right main-wing tip winglet: span_ft",
-      "actual": 4.525088,
-      "expected": 4.525088,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "main_root_twist_deg",
-      "actual": 0.0,
-      "expected": 0.0,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "main_tip_twist_deg",
-      "actual": -6.5,
-      "expected": -6.5,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "main_dihedral_deg",
-      "actual": 0.0,
-      "expected": 0.0,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "main_le_sweep_deg",
-      "actual": 21.583805,
-      "expected": 21.583805,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "main_taper",
-      "actual": 0.374299,
-      "expected": 0.374299,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "main_root_le_x_ft",
-      "actual": 7.883885,
-      "expected": 7.883885,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "main_root_le_z_ft",
-      "actual": 3.769542,
-      "expected": 3.769542,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "main_tip_le_x_ft",
-      "actual": 13.449781337615143,
-      "expected": 13.449763620722734,
-      "abs_tol": 0.0001,
-      "passed": true
-    },
-    {
-      "name": "main_tip_chord_ft",
-      "actual": 1.7040235100269427,
-      "expected": 1.7040235100269427,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Left main-wing tip winglet: root_x_ft",
-      "actual": 13.744229,
-      "expected": 13.744229,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Left main-wing tip winglet: root_y_ft",
-      "actual": -14.0625,
-      "expected": -14.0625,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Left main-wing tip winglet: root_z_ft",
-      "actual": 3.769542,
-      "expected": 3.769542,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Left main-wing tip winglet: vertical_rise_ft",
-      "actual": 4.525088,
-      "expected": 4.525088,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Left main-wing tip winglet: lateral_lean_ft",
-      "actual": 0.0,
-      "expected": 0.0,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Left main-wing tip winglet: aft_station_ft",
-      "actual": 16.869224,
-      "expected": 16.869224,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Left main-wing tip winglet: root_chord_ft",
-      "actual": 1.7040235100269427,
-      "expected": 1.7040235100269427,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Left main-wing tip winglet: taper",
-      "actual": 0.257932,
-      "expected": 0.257932,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Left main-wing tip winglet: symmetry_disabled",
-      "actual": 0.0,
-      "expected": 0,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Right main-wing tip winglet: root_x_ft",
-      "actual": 13.744229,
-      "expected": 13.744229,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Right main-wing tip winglet: root_y_ft",
-      "actual": 14.0625,
-      "expected": 14.0625,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Right main-wing tip winglet: root_z_ft",
-      "actual": 3.769542,
-      "expected": 3.769542,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Right main-wing tip winglet: vertical_rise_ft",
-      "actual": 4.525088,
-      "expected": 4.525088,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Right main-wing tip winglet: lateral_lean_ft",
-      "actual": 0.0,
-      "expected": 0.0,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Right main-wing tip winglet: aft_station_ft",
-      "actual": 16.869224,
-      "expected": 16.869224,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "Right main-wing tip winglet: root_chord_ft",
-      "actual": 1.7040235100269427,
-      "expected": 1.7040235100269427,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Right main-wing tip winglet: taper",
-      "actual": 0.257932,
-      "expected": 0.257932,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "Right main-wing tip winglet: symmetry_disabled",
-      "actual": 0.0,
-      "expected": 0,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "canard_le_sweep_deg",
-      "actual": 0.0,
-      "expected": 0.0,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "canard_taper",
-      "actual": 1.0,
-      "expected": 1.0,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "canard_root_le_x_ft",
-      "actual": 2.139451,
-      "expected": 2.139451,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "canard_root_le_z_ft",
-      "actual": 3.940886,
-      "expected": 3.940886,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "canard_leading_edge_x_offset_ft",
-      "actual": 0.0,
-      "expected": 0.0,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "fuselage_length_ft",
-      "actual": 14.01936,
-      "expected": 14.01936,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "fuselage_max_section_dimension_ft",
-      "actual": 3.425352,
-      "expected": 3.425352,
-      "abs_tol": 1e-08,
-      "passed": true
-    },
-    {
-      "name": "fuselage_nose_x_ft",
-      "actual": -1.4802973661668753e-16,
-      "expected": 0.0,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "fuselage_tail_x_ft",
-      "actual": 14.01936,
-      "expected": 14.01936,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "fuselage_centre_z_ft",
-      "actual": 3.3568049999999996,
-      "expected": 3.356805,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "nose_datum_x_ft",
-      "actual": -1.4802973661668753e-16,
-      "expected": 0.0,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "ground_datum_z_ft",
-      "actual": 0.0,
-      "expected": 0.0,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "aftmost_station_ft",
-      "actual": 16.869224,
-      "expected": 16.869224,
-      "abs_tol": 1e-06,
-      "passed": true
-    },
-    {
-      "name": "highest_point_ft",
-      "actual": 8.294630000000002,
-      "expected": 8.29463,
-      "abs_tol": 1e-06,
-      "passed": true
-    }
-  ],
   "after_reload": [
     {
       "name": "geometry_count",
@@ -724,14 +366,14 @@
     },
     {
       "name": "fuselage_max_section_dimension_ft",
-      "actual": 3.425352,
-      "expected": 3.425352,
-      "abs_tol": 1e-08,
+      "actual": 3.424766,
+      "expected": 3.424766,
+      "abs_tol": 1e-06,
       "passed": true
     },
     {
       "name": "fuselage_nose_x_ft",
-      "actual": -1.4802973661668753e-16,
+      "actual": 0.0,
       "expected": 0.0,
       "abs_tol": 1e-06,
       "passed": true
@@ -745,14 +387,14 @@
     },
     {
       "name": "fuselage_centre_z_ft",
-      "actual": 3.3568049999999996,
-      "expected": 3.356805,
-      "abs_tol": 1e-06,
+      "actual": 3.7638625000000006,
+      "expected": 3.763863,
+      "abs_tol": 0.05,
       "passed": true
     },
     {
       "name": "nose_datum_x_ft",
-      "actual": -1.4802973661668753e-16,
+      "actual": 0.0,
       "expected": 0.0,
       "abs_tol": 1e-06,
       "passed": true
@@ -784,7 +426,10 @@
     "Wing and canard are single trapezoids; strakes, elevators and ailerons are not separate surfaces",
     "The winglet has no cant; the front view shows roughly 4 deg of inward lean that is not modelled",
     "The drawing puts the winglet root leading edge 0.292141 ft aft of the straight-line wing tip leading edge, so the winglet root and the wing tip sections only partly overlap chordwise",
-    "Fuselage retains scaled default sections, not a plan-derived loft",
+    "The fuselage is lofted from the side-view silhouette of outlines 1927/2692/2044 with elliptical sections; the front-view section 1148 is drawn about 0.18 ft taller than the side view at the same station, so section heights follow the side view",
+    "The aft-body junction near station 11.18 ft is drawn as a near-vertical forward face; the loft ramps it between the stations 11.1769 and 11.1881 ft",
+    "The plan view ends the fuselage in a flat aft face 2.2594 ft wide by 0.9256 ft tall at station 14.0194 ft; the loft carries that face as a full ellipse section, so the aft end is an open ring rather than a point",
+    "The drawn lateral centre of the plan outlines wanders about 0.05 ft either side of the plan centreline; the loft is centred on the symmetry plane instead",
     "Spinner, cowl, gear, strakes and internal volumes are placeholder bodies, not structure",
     "Propeller disc is a reference only; no propulsion or aeroelastic model",
     "Airfoil sections are loaded from files but incidence, twist and camber effects are not validated",

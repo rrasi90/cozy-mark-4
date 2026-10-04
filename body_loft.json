@@ -1,0 +1,471 @@
+{
+  "schema": "cozy-body-loft/1",
+  "source": {
+    "file": "COZY3V.DXF",
+    "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+    "digitised_record": "COZY3V_digitized.json",
+    "digitised_sha256": "C58DA7ED315FFE36FABDF39AFE36103822A3B9D1E0922A61D2DF8D145CEE0243"
+  },
+  "units": {
+    "length": "ft"
+  },
+  "datums": {
+    "station_origin": "plan-view nose outline 678",
+    "height_origin": "side-view ground line 3217"
+  },
+  "outlines": {
+    "side": [
+      1927,
+      2692,
+      2044
+    ],
+    "plan": [
+      678,
+      457
+    ]
+  },
+  "length_ft": 14.01936,
+  "grid": {
+    "cells": 31,
+    "target_spacing_ft": 0.452237,
+    "section_count": 38,
+    "key_stations": "widest, nose-top peak, turtledeck ramp foot and top, forward-body aft end, aft-body junction, tail face, tail"
+  },
+  "extrema": {
+    "min_z_ft": 2.145099,
+    "max_z_ft": 5.382626,
+    "centre_z_ft": 3.763863
+  },
+  "sections": [
+    {
+      "station_ft": 0.0,
+      "half_width_ft": 0.0,
+      "width_ft": 0.0,
+      "centre_y_offset_ft": 22.124921,
+      "z_top_ft": 2.944067,
+      "z_bot_ft": 2.944067,
+      "height_ft": 0.0,
+      "centre_z_ft": 2.944067
+    },
+    {
+      "station_ft": 0.452237,
+      "half_width_ft": 0.497584,
+      "width_ft": 0.995168,
+      "centre_y_offset_ft": 22.131675,
+      "z_top_ft": 3.364647,
+      "z_bot_ft": 2.719709,
+      "height_ft": 0.644938,
+      "centre_z_ft": 3.042178
+    },
+    {
+      "station_ft": 0.904475,
+      "half_width_ft": 0.751608,
+      "width_ft": 1.503216,
+      "centre_y_offset_ft": 22.126212,
+      "z_top_ft": 3.591626,
+      "z_bot_ft": 2.626908,
+      "height_ft": 0.964717,
+      "centre_z_ft": 3.109267
+    },
+    {
+      "station_ft": 1.356712,
+      "half_width_ft": 0.950068,
+      "width_ft": 1.900135,
+      "centre_y_offset_ft": 22.132374,
+      "z_top_ft": 3.777813,
+      "z_bot_ft": 2.547096,
+      "height_ft": 1.230717,
+      "centre_z_ft": 3.162455
+    },
+    {
+      "station_ft": 1.80895,
+      "half_width_ft": 1.11035,
+      "width_ft": 2.2207,
+      "centre_y_offset_ft": 22.145159,
+      "z_top_ft": 3.938503,
+      "z_bot_ft": 2.490127,
+      "height_ft": 1.448376,
+      "centre_z_ft": 3.214315
+    },
+    {
+      "station_ft": 2.261187,
+      "half_width_ft": 1.181849,
+      "width_ft": 2.363699,
+      "centre_y_offset_ft": 22.151146,
+      "z_top_ft": 4.077043,
+      "z_bot_ft": 2.449103,
+      "height_ft": 1.62794,
+      "centre_z_ft": 3.263073
+    },
+    {
+      "station_ft": 2.713425,
+      "half_width_ft": 1.253737,
+      "width_ft": 2.507474,
+      "centre_y_offset_ft": 22.152403,
+      "z_top_ft": 4.194875,
+      "z_bot_ft": 2.418627,
+      "height_ft": 1.776248,
+      "centre_z_ft": 3.306751
+    },
+    {
+      "station_ft": 3.165662,
+      "half_width_ft": 1.422064,
+      "width_ft": 2.844127,
+      "centre_y_offset_ft": 22.134465,
+      "z_top_ft": 4.289076,
+      "z_bot_ft": 2.398064,
+      "height_ft": 1.891012,
+      "centre_z_ft": 3.34357
+    },
+    {
+      "station_ft": 3.507363,
+      "half_width_ft": 1.477427,
+      "width_ft": 2.954854,
+      "centre_y_offset_ft": 22.140062,
+      "z_top_ft": 4.343209,
+      "z_bot_ft": 2.387404,
+      "height_ft": 1.955805,
+      "centre_z_ft": 3.365306
+    },
+    {
+      "station_ft": 3.617899,
+      "half_width_ft": 1.495336,
+      "width_ft": 2.990673,
+      "centre_y_offset_ft": 22.141873,
+      "z_top_ft": 4.24941,
+      "z_bot_ft": 2.384783,
+      "height_ft": 1.864627,
+      "centre_z_ft": 3.317097
+    },
+    {
+      "station_ft": 4.070137,
+      "half_width_ft": 1.562191,
+      "width_ft": 3.124382,
+      "centre_y_offset_ft": 22.146452,
+      "z_top_ft": 4.141854,
+      "z_bot_ft": 2.37614,
+      "height_ft": 1.765714,
+      "centre_z_ft": 3.258997
+    },
+    {
+      "station_ft": 4.522374,
+      "half_width_ft": 1.606601,
+      "width_ft": 3.213203,
+      "centre_y_offset_ft": 22.152911,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.372028,
+      "height_ft": 1.753453,
+      "centre_z_ft": 3.248755
+    },
+    {
+      "station_ft": 4.974612,
+      "half_width_ft": 1.648957,
+      "width_ft": 3.297913,
+      "centre_y_offset_ft": 22.157316,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.371532,
+      "height_ft": 1.753949,
+      "centre_z_ft": 3.248507
+    },
+    {
+      "station_ft": 5.426849,
+      "half_width_ft": 1.672627,
+      "width_ft": 3.345254,
+      "centre_y_offset_ft": 22.161202,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.372358,
+      "height_ft": 1.753123,
+      "centre_z_ft": 3.24892
+    },
+    {
+      "station_ft": 5.879086,
+      "half_width_ft": 1.695332,
+      "width_ft": 3.390665,
+      "centre_y_offset_ft": 22.166055,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.37591,
+      "height_ft": 1.749571,
+      "centre_z_ft": 3.250696
+    },
+    {
+      "station_ft": 6.331324,
+      "half_width_ft": 1.70448,
+      "width_ft": 3.408961,
+      "centre_y_offset_ft": 22.167821,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.381247,
+      "height_ft": 1.744234,
+      "centre_z_ft": 3.253364
+    },
+    {
+      "station_ft": 6.783561,
+      "half_width_ft": 1.710733,
+      "width_ft": 3.421466,
+      "centre_y_offset_ft": 22.172281,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.386578,
+      "height_ft": 1.738903,
+      "centre_z_ft": 3.256029
+    },
+    {
+      "station_ft": 6.902913,
+      "half_width_ft": 1.712383,
+      "width_ft": 3.424766,
+      "centre_y_offset_ft": 22.173458,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.387978,
+      "height_ft": 1.737503,
+      "centre_z_ft": 3.256729
+    },
+    {
+      "station_ft": 7.235799,
+      "half_width_ft": 1.707512,
+      "width_ft": 3.415023,
+      "centre_y_offset_ft": 22.173135,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.391898,
+      "height_ft": 1.733583,
+      "centre_z_ft": 3.258689
+    },
+    {
+      "station_ft": 7.688036,
+      "half_width_ft": 1.69771,
+      "width_ft": 3.395419,
+      "centre_y_offset_ft": 22.175881,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.395341,
+      "height_ft": 1.73014,
+      "centre_z_ft": 3.260411
+    },
+    {
+      "station_ft": 8.140274,
+      "half_width_ft": 1.684745,
+      "width_ft": 3.369491,
+      "centre_y_offset_ft": 22.176985,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.39975,
+      "height_ft": 1.725731,
+      "centre_z_ft": 3.262615
+    },
+    {
+      "station_ft": 8.592511,
+      "half_width_ft": 1.665117,
+      "width_ft": 3.330235,
+      "centre_y_offset_ft": 22.179043,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.400693,
+      "height_ft": 1.724788,
+      "centre_z_ft": 3.263087
+    },
+    {
+      "station_ft": 8.781468,
+      "half_width_ft": 1.656916,
+      "width_ft": 3.313832,
+      "centre_y_offset_ft": 22.179903,
+      "z_top_ft": 4.125481,
+      "z_bot_ft": 2.400693,
+      "height_ft": 1.724788,
+      "centre_z_ft": 3.263087
+    },
+    {
+      "station_ft": 9.044748,
+      "half_width_ft": 1.6446,
+      "width_ft": 3.2892,
+      "centre_y_offset_ft": 22.180212,
+      "z_top_ft": 4.583897,
+      "z_bot_ft": 2.399946,
+      "height_ft": 2.183951,
+      "centre_z_ft": 3.491921
+    },
+    {
+      "station_ft": 9.497865,
+      "half_width_ft": 1.616936,
+      "width_ft": 3.233873,
+      "centre_y_offset_ft": 22.17971,
+      "z_top_ft": 5.382626,
+      "z_bot_ft": 2.395478,
+      "height_ft": 2.987148,
+      "centre_z_ft": 3.889052
+    },
+    {
+      "station_ft": 9.949223,
+      "half_width_ft": 1.589213,
+      "width_ft": 3.178425,
+      "centre_y_offset_ft": 22.179377,
+      "z_top_ft": 5.326682,
+      "z_bot_ft": 2.388287,
+      "height_ft": 2.938395,
+      "centre_z_ft": 3.857484
+    },
+    {
+      "station_ft": 10.401461,
+      "half_width_ft": 1.557895,
+      "width_ft": 3.11579,
+      "centre_y_offset_ft": 22.176022,
+      "z_top_ft": 5.276668,
+      "z_bot_ft": 2.391479,
+      "height_ft": 2.885189,
+      "centre_z_ft": 3.834074
+    },
+    {
+      "station_ft": 10.853698,
+      "half_width_ft": 1.526043,
+      "width_ft": 3.052085,
+      "centre_y_offset_ft": 22.172311,
+      "z_top_ft": 5.216789,
+      "z_bot_ft": 2.424864,
+      "height_ft": 2.791925,
+      "centre_z_ft": 3.820826
+    },
+    {
+      "station_ft": 11.147072,
+      "half_width_ft": 1.505973,
+      "width_ft": 3.011945,
+      "centre_y_offset_ft": 22.175666,
+      "z_top_ft": 5.168684,
+      "z_bot_ft": 2.459132,
+      "height_ft": 2.709552,
+      "centre_z_ft": 3.813908
+    },
+    {
+      "station_ft": 11.176922,
+      "half_width_ft": 1.502989,
+      "width_ft": 3.005977,
+      "centre_y_offset_ft": 22.175791,
+      "z_top_ft": 5.15744,
+      "z_bot_ft": 2.463171,
+      "height_ft": 2.694269,
+      "centre_z_ft": 3.810306
+    },
+    {
+      "station_ft": 11.188116,
+      "half_width_ft": 1.50187,
+      "width_ft": 3.003739,
+      "centre_y_offset_ft": 22.175838,
+      "z_top_ft": 5.155477,
+      "z_bot_ft": 2.145099,
+      "height_ft": 3.010378,
+      "centre_z_ft": 3.650288
+    },
+    {
+      "station_ft": 11.305935,
+      "half_width_ft": 1.490092,
+      "width_ft": 2.980184,
+      "centre_y_offset_ft": 22.176332,
+      "z_top_ft": 5.134808,
+      "z_bot_ft": 2.165342,
+      "height_ft": 2.969466,
+      "centre_z_ft": 3.650075
+    },
+    {
+      "station_ft": 11.758173,
+      "half_width_ft": 1.441414,
+      "width_ft": 2.882829,
+      "centre_y_offset_ft": 22.175531,
+      "z_top_ft": 5.055473,
+      "z_bot_ft": 2.253929,
+      "height_ft": 2.801544,
+      "centre_z_ft": 3.654701
+    },
+    {
+      "station_ft": 12.21041,
+      "half_width_ft": 1.389402,
+      "width_ft": 2.778804,
+      "centre_y_offset_ft": 22.177079,
+      "z_top_ft": 4.976138,
+      "z_bot_ft": 2.378765,
+      "height_ft": 2.597373,
+      "centre_z_ft": 3.677451
+    },
+    {
+      "station_ft": 12.662648,
+      "half_width_ft": 1.331694,
+      "width_ft": 2.663388,
+      "centre_y_offset_ft": 22.179254,
+      "z_top_ft": 4.896803,
+      "z_bot_ft": 2.545967,
+      "height_ft": 2.350836,
+      "centre_z_ft": 3.721385
+    },
+    {
+      "station_ft": 13.114885,
+      "half_width_ft": 1.270263,
+      "width_ft": 2.540525,
+      "centre_y_offset_ft": 22.182101,
+      "z_top_ft": 4.817468,
+      "z_bot_ft": 2.770121,
+      "height_ft": 2.047347,
+      "centre_z_ft": 3.793794
+    },
+    {
+      "station_ft": 13.567123,
+      "half_width_ft": 1.203877,
+      "width_ft": 2.407754,
+      "centre_y_offset_ft": 22.183092,
+      "z_top_ft": 4.738133,
+      "z_bot_ft": 3.061461,
+      "height_ft": 1.676672,
+      "centre_z_ft": 3.899797
+    },
+    {
+      "station_ft": 14.01936,
+      "half_width_ft": 1.129722,
+      "width_ft": 2.259445,
+      "centre_y_offset_ft": 22.181206,
+      "z_top_ft": 4.360951,
+      "z_bot_ft": 3.435371,
+      "height_ft": 0.92558,
+      "centre_z_ft": 3.898161
+    }
+  ],
+  "references": [
+    {
+      "name": "widest",
+      "station_ft": 6.902913,
+      "loft_station_ft": 6.902913,
+      "width_ft": 3.424766,
+      "height_ft": 1.737503
+    },
+    {
+      "name": "nose_top_peak",
+      "station_ft": 3.507363,
+      "loft_station_ft": 3.507363,
+      "width_ft": 2.954854,
+      "height_ft": 1.955805
+    },
+    {
+      "name": "turtledeck_ramp_foot",
+      "station_ft": 8.781468,
+      "loft_station_ft": 8.781468,
+      "width_ft": 3.313832,
+      "height_ft": 1.724788
+    },
+    {
+      "name": "turtledeck_ramp_top",
+      "station_ft": 11.147072,
+      "loft_station_ft": 11.147072,
+      "width_ft": 3.011945,
+      "height_ft": 2.709552
+    },
+    {
+      "name": "aft_body_junction",
+      "station_ft": 11.188116,
+      "loft_station_ft": 11.188116,
+      "width_ft": 3.003739,
+      "height_ft": 3.010378
+    },
+    {
+      "name": "tail_face",
+      "station_ft": 14.01936,
+      "loft_station_ft": 14.01936,
+      "width_ft": 2.259445,
+      "height_ft": 0.92558
+    }
+  ],
+  "method": "Outer silhouette envelope of the side-view outlines 1927/2692/2044 (height) and the plan-view outlines 678/457 (width), sampled on a uniform station grid with the slope-change and outline-junction stations added, so the OpenVSP loft follows the drawn contour.",
+  "limitations": [
+    "Section heights follow the side view; the front-view section 1148 is drawn taller than the side view at the same station",
+    "The drawn lateral centre of the plan outlines wanders about 0.05 ft either side of the plan centreline; the loft is centred on the symmetry plane instead",
+    "The aft-body forward face is near-vertical in the drawing; the loft ramps it between the two stations that bracket it"
+  ]
+}

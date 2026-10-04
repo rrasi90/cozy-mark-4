@@ -39,10 +39,22 @@ Status is `match` when |deviation| ≤ tolerance, `OFF` otherwise, `n/a` when th
 | 26 | Propeller diameter | 5.6856 | ft | polyline-measured | side / L5 / 2780, 2786 | 0.05 | 5.6856 | 0 | match |
 | 27 | Propeller disc station from nose | 14.1918 | ft | polyline-measured | side / L5 / 2780, 2786 | 0.05 | 14.1918 | 0 | match |
 | 28 | Canopy top height above ground | 5.5322 | ft | polyline-measured | side / L5 / 2177, 3217 | 0.05 | — | — | n/a |
-| 29 | Fuselage section centre height above ground | 3.3568 | ft | polyline-measured | side / L5 / 1927, 3217 | 0.05 | 3.3568 | 0 | match |
-| 30 | Nose wheel diameter | 0.8349 | ft | polyline-measured | side / L5 / 2458, 3217 | 0.05 | 0.8349 | 0 | match |
-| 31 | Main wheel diameter | 0.8652 | ft | polyline-measured | side / L5 / 2625, 3217 | 0.05 | 0.8652 | 0 | match |
-| 32 | Main gear track, wheel centre to wheel centre | 5.8848 | ft | polyline-measured | front / L5 / 1109, 1788 | 0.05 | 5.8848 | 0 | match |
+| 29 | Fuselage centre height above ground | 3.7639 | ft | polyline-measured | side / L5 / 1927, 2692, 2044 | 0.05 | 3.7639 | 0 | match |
+| 30 | Fuselage section width, station 6.90 ft | 3.4248 | ft | polyline-measured | top / L5 / 678, 457 | 0.05 | — | — | n/a |
+| 31 | Fuselage section height, station 6.90 ft | 1.7375 | ft | polyline-measured | side / L5 / 1927, 2692, 2044 | 0.05 | — | — | n/a |
+| 32 | Fuselage section width, station 3.51 ft | 2.9549 | ft | polyline-measured | top / L5 / 678, 457 | 0.05 | — | — | n/a |
+| 33 | Fuselage section height, station 3.51 ft | 1.9558 | ft | polyline-measured | side / L5 / 1927, 2692, 2044 | 0.05 | — | — | n/a |
+| 34 | Fuselage section width, station 8.78 ft | 3.3138 | ft | polyline-measured | top / L5 / 678, 457 | 0.05 | — | — | n/a |
+| 35 | Fuselage section height, station 8.78 ft | 1.7248 | ft | polyline-measured | side / L5 / 1927, 2692, 2044 | 0.05 | — | — | n/a |
+| 36 | Fuselage section width, station 11.15 ft | 3.0119 | ft | polyline-measured | top / L5 / 678, 457 | 0.05 | — | — | n/a |
+| 37 | Fuselage section height, station 11.15 ft | 2.7096 | ft | polyline-measured | side / L5 / 1927, 2692, 2044 | 0.05 | — | — | n/a |
+| 38 | Fuselage section width, station 11.19 ft | 3.0037 | ft | polyline-measured | top / L5 / 678, 457 | 0.05 | — | — | n/a |
+| 39 | Fuselage section height, station 11.19 ft | 3.0104 | ft | polyline-measured | side / L5 / 1927, 2692, 2044 | 0.05 | — | — | n/a |
+| 40 | Fuselage section width, station 14.02 ft | 2.2594 | ft | polyline-measured | top / L5 / 678, 457 | 0.05 | — | — | n/a |
+| 41 | Fuselage section height, station 14.02 ft | 0.9256 | ft | polyline-measured | side / L5 / 1927, 2692, 2044 | 0.05 | — | — | n/a |
+| 42 | Nose wheel diameter | 0.8349 | ft | polyline-measured | side / L5 / 2458, 3217 | 0.05 | 0.8349 | 0 | match |
+| 43 | Main wheel diameter | 0.8652 | ft | polyline-measured | side / L5 / 2625, 3217 | 0.05 | 0.8652 | 0 | match |
+| 44 | Main gear track, wheel centre to wheel centre | 5.8848 | ft | polyline-measured | front / L5 / 1109, 1788 | 0.05 | 5.8848 | 0 | match |
 
 ## Notes
 
@@ -63,7 +75,19 @@ Status is `match` when |deviation| ≤ tolerance, `OFF` otherwise, `n/a` when th
 - **canard_center_height_ft** — Front view sits higher than the side view; the side view carries the explicit ground line and is used as the height datum.
 - **prop_diameter_ft** — The baseline hard-coded the propeller disk diameter at 5.80 ft.
 - **prop_station_from_nose_ft** — Station origins are per view: each view is referenced to its own nose outline, so the raw sheet coordinates are not comparable. After that correction the views still disagree slightly - the spinner forward station differs by 0.018 ft and the canard leading edge by 0.061 ft between the plan and side views - so longitudinal stations carry about +/-0.05 ft of inter-view uncertainty. This row uses the side view because the propeller disc is only drawn there.
-- **fuselage_center_height_ft** — The model fuselage cross sections are still scaled defaults, so only the datum can be matched, not the section shape.
+- **fuselage_center_height_ft** — The fuselage is lofted from the side-view silhouette of outlines 1927 (forward body), 2692 (turtledeck ramp) and 2044 (aft body), so the model centre height is the mid-height of the whole silhouette, not of the forward body alone. The three outline mid heights span 3.3568 to 3.6541 ft and the front view section 1148 sits 0.273 ft from the side-view silhouette centre; the side view carries the explicit ground line and is the height datum.
+- **fuselage_section_width_st_6.90_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json.
+- **fuselage_section_height_st_6.90_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json.
+- **fuselage_section_width_st_3.51_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json.
+- **fuselage_section_height_st_3.51_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json.
+- **fuselage_section_width_st_8.78_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json.
+- **fuselage_section_height_st_8.78_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json.
+- **fuselage_section_width_st_11.15_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json.
+- **fuselage_section_height_st_11.15_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json.
+- **fuselage_section_width_st_11.19_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json.
+- **fuselage_section_height_st_11.19_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json.
+- **fuselage_section_width_st_14.02_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section width at this station against body_loft.json.
+- **fuselage_section_height_st_14.02_ft** — Reference station for the plan-derived fuselage loft; verify_geometry.py re-measures the model section height at this station against body_loft.json.
 - **nose_wheel_diameter_ft** — The model gear placeholders are wheel-envelope pods sized by this diameter and resting on the ground datum; they are not a landing-gear model.
 - **main_wheel_diameter_ft** — The model gear placeholders are wheel-envelope pods sized by this diameter and resting on the ground datum; they are not a landing-gear model.
 - **main_gear_track_ft** — The model main-gear placeholders are placed at plus/minus half of this track and rest on the ground datum; they are not a landing-gear model.
@@ -106,8 +130,9 @@ Status is `match` when |deviation| ≤ tolerance, `OFF` otherwise, `n/a` when th
 - **prop_station_from_nose_ft** — top view spinner 478 forward station: `14.0645` (entities 478)
 - **prop_station_from_nose_ft** — top view spinner 478 aft station: `15.4155` (entities 478)
 - **canopy_top_height_ft** — front view canopy 1602: `5.7177` (entities 1602)
+- **fuselage_center_height_ft** — forward fuselage 1927 mid height: `3.3568` (entities 1927)
+- **fuselage_center_height_ft** — rear fuselage 2044 mid height: `3.6541` (entities 2044)
 - **fuselage_center_height_ft** — front view fuselage section 1148: `3.4908` (entities 1148)
-- **fuselage_center_height_ft** — rear fuselage 2044: `3.6541` (entities 2044)
 - **nose_wheel_diameter_ft** — front view nose wheel 1254: `0.7599` (entities 1254)
 - **main_wheel_diameter_ft** — front view main wheel 1788: `0.7609` (entities 1788)
 
