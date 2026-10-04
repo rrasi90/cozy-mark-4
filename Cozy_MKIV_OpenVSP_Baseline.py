@@ -1,6 +1,6 @@
 """
 COZY MK IV — OpenVSP parametric baseline
-Revision: 0.1 | Units: ft, deg
+Revision: 0.2 | Units: ft, deg
 
 Purpose: a full external, analysis-oriented starting geometry for OpenVSP/VSPAERO.
 This is NOT a certified manufacturing model, flight manual, or substitute for the
@@ -16,6 +16,12 @@ Use
    analysis case, and regenerate any mesh after parameter changes.
 
 Coordinate convention: X forward, Y right, Z up. OpenVSP's wing symmetry is XZ.
+Datum: X = 0 on the plan-view nose outline, Z = 0 on the ground line
+(LINE 3217 of the side view). Every station below is measured from the nose,
+every height above the ground.
+
+Every number in P is read from dimensions.json, produced by measure_dxf.py
+from COZY3V.DXF. Re-run measure_dxf.py after changing P.
 """
 
 import hashlib
@@ -32,25 +38,50 @@ except ImportError as exc:
         "shipped for your OpenVSP build, then retry. Details: https://openvsp.org/pyapi_docs/latest/"
     ) from exc
 
-OUTFILE = Path(__file__).resolve().with_name("Cozy_MKIV_Baseline.vsp3")
+HERE = Path(__file__).resolve().parent
+OUTFILE = HERE / "Cozy_MKIV_Baseline.vsp3"
 REPORT = OUTFILE.with_suffix(".validation.json")
+DIMENSIONS = HERE / "dimensions.json"
+AIRFOILS = HERE / "airfoil"
+E1230 = AIRFOILS / "e1230.dat"
+R1145MS = AIRFOILS / "r1145ms.dat"
+
 P = {
-    "overall_length": 16.90,
-    "main_span": 28.10,
-    "main_area": 88.30,
-    "canard_span": 11.50,
-    "canard_area": 21.00,
-    "fuselage_length": 16.90,
-    "fuselage_max_dia": 3.50,
-    "wing_x": 8.05,
-    "wing_z": 1.45,
-    "canard_x": 3.15,
-    "canard_z": 1.95,
-    "winglet_x": 13.20,
-    "winglet_z": 1.75,
-    "prop_x": 15.60,
-    "prop_z": 2.10,
+    "overall_length": 16.916667,
+    "main_span": 28.125,
+    "main_area": 88.552617,
+    "main_le_sweep_deg": 21.583805,
+    "main_taper": 0.374299,
+    "main_tip_twist_deg": -6.50,
+    "main_dihedral_deg": 0.0,
+    "canard_span": 12.563641,
+    "canard_area": 12.922935,
+    "canard_le_sweep_deg": 0.0,
+    "canard_taper": 1.0,
+    "fuselage_length": 14.019360,
+    "fuselage_max_dia": 3.425352,
+    "fuselage_z": 3.356805,
+    "wing_x": 7.883885,
+    "wing_z": 3.769542,
+    "canard_x": 2.139451,
+    "canard_z": 3.940886,
+    "winglet_height": 4.525088,
+    "winglet_le_station": 13.744229,
+    "winglet_aft_station": 16.869224,
+    "winglet_taper": 0.257932,
+    "prop_x": 14.191762,
+    "prop_z": 4.226773,
+    "prop_diameter": 5.685553,
+    "spinner_x": 14.064531,
+    "spinner_length": 1.351016,
+    "spinner_diameter": 0.924684,
+    "strake_x": 5.358900,
+    "strake_length": 8.155400,
+    "nose_wheel_diameter": 0.834941,
+    "main_wheel_diameter": 0.865234,
+    "main_gear_track": 5.884759,
 }
+
 
 def check_errors(stage):
     manager = vsp.ErrorMgrSingleton.getInstance()
@@ -85,17 +116,44 @@ def place(gid, x, y, z, xrot=0.0, yrot=0.0, zrot=0.0):
     setp(gid, "Z_Rel_Rotation", "XForm", zrot)
 
 
-def wing(name, x, z, span, area, xrot=0.0, yrot=0.0, zrot=0.0):
+def apply_airfoil(gid, path):
+    if not path.is_file():
+        raise RuntimeError(f"missing airfoil file {path}")
+    surface = vsp.GetXSecSurf(gid, 0)
+    for index in range(vsp.GetNumXSec(surface)):
+        vsp.ChangeXSecShape(surface, index, vsp.XS_FILE_AIRFOIL)
+        check_errors(f"Set file airfoil shape {index}")
+        vsp.ReadFileAirfoil(vsp.GetXSec(surface, index), str(path))
+        check_errors(f"Read airfoil {path.name} into section {index}")
+    vsp.Update()
+    check_errors(f"Apply airfoil {path.name}")
+
+
+def wing(name, x, z, span, root_value, sweep=0.0, taper=1.0, symmetric=True,
+         airfoil=None, xrot=0.0, yrot=0.0, zrot=0.0):
     gid = named_geom("WING", name)
+    if airfoil is not None:
+        apply_airfoil(gid, airfoil)
     place(gid, x, 0.0, z, xrot, yrot, zrot)
-    setp(gid, "Sym_Planar_Flag", "Sym", vsp.SYM_XZ)
-    vsp.SetDriverGroup(
-        gid, 1, vsp.SPAN_WSECT_DRIVER, vsp.AREA_WSECT_DRIVER,
-        vsp.TAPER_WSECT_DRIVER,
-    )
-    check_errors(f"Set wing drivers: {name}")
-    setp(gid, "Span", "XSec_1", span / 2.0)
-    setp(gid, "Area", "XSec_1", area / 2.0)
+    setp(gid, "Sym_Planar_Flag", "Sym", vsp.SYM_XZ if symmetric else 0)
+    if symmetric:
+        vsp.SetDriverGroup(
+            gid, 1, vsp.SPAN_WSECT_DRIVER, vsp.AREA_WSECT_DRIVER,
+            vsp.TAPER_WSECT_DRIVER,
+        )
+        check_errors(f"Set wing drivers: {name}")
+        setp(gid, "Span", "XSec_1", span / 2.0)
+        setp(gid, "Area", "XSec_1", root_value / 2.0)
+    else:
+        vsp.SetDriverGroup(
+            gid, 1, vsp.SPAN_WSECT_DRIVER, vsp.ROOTC_WSECT_DRIVER,
+            vsp.TAPER_WSECT_DRIVER,
+        )
+        check_errors(f"Set winglet chord drivers: {name}")
+        setp(gid, "Span", "XSec_1", span)
+        setp(gid, "Root_Chord", "XSec_1", root_value)
+    setp(gid, "Sweep", "XSec_1", sweep)
+    setp(gid, "Taper", "XSec_1", taper)
     vsp.Update()
     return gid
 
@@ -124,12 +182,12 @@ def pod(name, x, y, z, length, diameter, yrot=0.0):
     gid = named_geom("POD", name)
     place(gid, x, y, z, 0.0, yrot, 0.0)
     setp(gid, "Length", "Design", length)
-    setp(gid, "FineRatio", "Design", max(1.1, length / max(diameter, 0.1)))
+    setp(gid, "FineRatio", "Design", 2.0 * length / max(diameter, 0.1))
     vsp.Update()
     return gid
 
 
-def disk(name, x, y, z, diameter, yrot=90.0):
+def disk(name, x, y, z, diameter, yrot=0.0):
     gid = named_geom("PROP", name)
     place(gid, x, y, z, 0.0, yrot, 0.0)
     setp(gid, "Diameter", "Design", diameter)
@@ -140,63 +198,148 @@ def disk(name, x, y, z, diameter, yrot=90.0):
 vsp.ClearVSPModel()
 
 # 1) Principal lifting surfaces
-fuselage = body("Fuselage — plan-derived loft required", 0.0, 0.0,
+fuselage = body("Fuselage — plan-derived loft required", 0.0, P["fuselage_z"],
                 P["fuselage_length"], P["fuselage_max_dia"])
 main_wing = wing("Main Wing", P["wing_x"], P["wing_z"], P["main_span"],
-                 P["main_area"], xrot=0.0, yrot=0.0, zrot=0.0)
+                 P["main_area"], sweep=P["main_le_sweep_deg"],
+                 taper=P["main_taper"], airfoil=E1230)
+setp(main_wing, "Twist", "XSec_0", 0.0)
+setp(main_wing, "Twist", "XSec_1", P["main_tip_twist_deg"])
+setp(main_wing, "Dihedral", "XSec_1", P["main_dihedral_deg"])
 canard = wing("Canard — Roncz 1145MS verification needed", P["canard_x"],
               P["canard_z"], P["canard_span"], P["canard_area"],
-              xrot=0.0, yrot=0.0, zrot=0.0)
+              sweep=P["canard_le_sweep_deg"], taper=P["canard_taper"],
+              airfoil=R1145MS)
 
-# 2) Vertical endplates / winglets. These are separate, symmetric vertical wings.
-winglets = wing("Main-wing tip winglets", P["winglet_x"], P["winglet_z"],
-                3.00, 8.00, xrot=0.0, yrot=0.0, zrot=90.0)
+vsp.Update()
+main_tip_le = vsp.CompPnt01(main_wing, 0, 1.0, 0.5)
+main_tip_te = vsp.CompPnt01(main_wing, 0, 1.0, 0.0)
+check_errors("Read main-wing tip chord")
+P["winglet_root_chord"] = abs(main_tip_te.x() - main_tip_le.x())
+winglet_sweep = math.degrees(math.atan(
+    (P["winglet_aft_station"] - P["winglet_le_station"]
+     - P["winglet_root_chord"] * P["winglet_taper"]) / P["winglet_height"]
+))
+for name, side in (("Left main-wing tip winglet", -1), ("Right main-wing tip winglet", 1)):
+    gid = wing(name, P["winglet_le_station"], P["wing_z"],
+               P["winglet_height"], P["winglet_root_chord"],
+               sweep=winglet_sweep, taper=P["winglet_taper"],
+               symmetric=False, airfoil=E1230, xrot=90.0)
+    setp(gid, "Y_Rel_Location", "XForm", side * P["main_span"] / 2.0)
 
 # 3) External configuration for interference/drag trade studies
-# Strakes are modeled as low-profile transition volumes. Replace with plan stations.
-left_strake = pod("Left strake transition", 6.70, -2.10, 1.12, 4.10, 0.75, yrot=0.0)
-right_strake = pod("Right strake transition", 6.70, 2.10, 1.12, 4.10, 0.75, yrot=0.0)
-engine_cowl = pod("Rear engine cowl", 13.25, 0.0, 1.85, 2.05, 1.65, yrot=0.0)
-spinner = pod("Pusher propeller spinner", 15.00, 0.0, P["prop_z"], 0.70, 0.55, yrot=0.0)
+left_strake = pod("Left strake transition", P["strake_x"], -2.10, P["wing_z"],
+                  P["strake_length"], 0.75, yrot=0.0)
+right_strake = pod("Right strake transition", P["strake_x"], 2.10, P["wing_z"],
+                   P["strake_length"], 0.75, yrot=0.0)
+engine_cowl = pod("Rear engine cowl", P["fuselage_length"] - 2.05, 0.0,
+                  P["fuselage_z"] + 1.85, 2.05, 1.65, yrot=0.0)
+spinner = pod("Pusher propeller spinner", P["spinner_x"], 0.0, P["prop_z"],
+              P["spinner_length"], P["spinner_diameter"], yrot=0.0)
 prop = disk("Pusher propeller disk — reference only", P["prop_x"], 0.0,
-            P["prop_z"], 5.80, yrot=90.0)
+            P["prop_z"], P["prop_diameter"], yrot=0.0)
 
 # Gear placeholders: keep them separate so they can be excluded from a clean-airframe set.
-nose_gear = pod("Nose gear / fairing placeholder", 2.45, 0.0, -0.85, 1.30, 0.25)
-left_gear = pod("Left main gear / fairing placeholder", 8.15, -2.45, -0.90, 1.60, 0.30)
-right_gear = pod("Right main gear / fairing placeholder", 8.15, 2.45, -0.90, 1.60, 0.30)
+nose_gear = pod("Nose gear / fairing placeholder", 2.45, 0.0,
+                P["nose_wheel_diameter"] / 2.0, 1.30, P["nose_wheel_diameter"])
+left_gear = pod("Left main gear / fairing placeholder", 8.15,
+                -P["main_gear_track"] / 2.0, P["main_wheel_diameter"] / 2.0,
+                1.60, P["main_wheel_diameter"])
+right_gear = pod("Right main gear / fairing placeholder", 8.15,
+                 P["main_gear_track"] / 2.0, P["main_wheel_diameter"] / 2.0,
+                 1.60, P["main_wheel_diameter"])
 
 # 4) Conceptual internal mass/reference volumes. They do not represent structure.
 # Review using Mass Properties after replacing with plan-derived stations and masses.
-front_occupants = pod("Front occupants mass envelope", 4.70, 0.0, 1.45, 1.65, 2.20)
-rear_occupants = pod("Rear occupants mass envelope", 7.05, 0.0, 1.42, 1.45, 2.20)
-left_fuel = pod("Left fuel volume envelope", 7.85, -2.10, 1.20, 2.50, 0.65)
-right_fuel = pod("Right fuel volume envelope", 7.85, 2.10, 1.20, 2.50, 0.65)
+front_occupants = pod("Front occupants mass envelope", 4.70, 0.0,
+                      P["fuselage_z"] + 1.45, 1.65, 2.20)
+rear_occupants = pod("Rear occupants mass envelope", 7.05, 0.0,
+                     P["fuselage_z"] + 1.42, 1.45, 2.20)
+left_fuel = pod("Left fuel volume envelope", 7.85, -2.10,
+                P["fuselage_z"] + 1.20, 2.50, 0.65)
+right_fuel = pod("Right fuel volume envelope", 7.85, 2.10,
+                 P["fuselage_z"] + 1.20, 2.50, 0.65)
+
 
 def validate_model():
     checks = []
 
-    def verify(name, actual, expected):
-        passed = math.isclose(actual, expected, rel_tol=1e-8, abs_tol=1e-8)
+    def verify(name, actual, expected, abs_tol=1e-8):
+        passed = math.isclose(actual, expected, rel_tol=1e-8, abs_tol=abs_tol)
         checks.append({
-            "name": name, "actual": actual, "expected": expected, "passed": passed,
+            "name": name, "actual": actual, "expected": expected,
+            "abs_tol": abs_tol, "passed": passed,
         })
 
+    def box(gid):
+        lo = vsp.GetGeomBBoxMin(gid)
+        hi = vsp.GetGeomBBoxMax(gid)
+        return (lo.x(), lo.y(), lo.z()), (hi.x(), hi.y(), hi.z())
+
     geoms = vsp.FindGeoms()
-    verify("geometry_count", len(geoms), 16)
+    verify("geometry_count", len(geoms), 17)
     by_name = {vsp.GetGeomName(gid): gid for gid in geoms}
     verify("unique_geometry_names", len(by_name), len(geoms))
-    for name, span, area in (
-        ("Main Wing", P["main_span"], P["main_area"]),
-        ("Canard — Roncz 1145MS verification needed", P["canard_span"], P["canard_area"]),
-        ("Main-wing tip winglets", 3.0, 8.0),
+    for name, span, area, symmetric in (
+        ("Main Wing", P["main_span"], P["main_area"], True),
+        ("Canard — Roncz 1145MS verification needed", P["canard_span"], P["canard_area"], True),
+        ("Left main-wing tip winglet", P["winglet_height"], None, False),
+        ("Right main-wing tip winglet", P["winglet_height"], None, False),
     ):
         gid = by_name[name]
         actual_span = vsp.GetParmVal(gid, "TotalSpan", "WingGeom")
         actual_area = vsp.GetParmVal(gid, "TotalArea", "WingGeom")
         verify(f"{name}: span_ft", actual_span, span)
-        verify(f"{name}: area_ft2", actual_area, area)
-        verify(f"{name}: derived_aspect", actual_span ** 2 / actual_area, span ** 2 / area)
+        if area is not None:
+            verify(f"{name}: area_ft2", actual_area, area)
+            verify(f"{name}: derived_aspect", actual_span ** 2 / actual_area, span ** 2 / area)
+
+    gid = by_name["Main Wing"]
+    verify("main_root_twist_deg", vsp.GetParmVal(gid, "Twist", "XSec_0"), 0.0)
+    verify("main_tip_twist_deg", vsp.GetParmVal(gid, "Twist", "XSec_1"), P["main_tip_twist_deg"])
+    verify("main_dihedral_deg", vsp.GetParmVal(gid, "Dihedral", "XSec_1"), P["main_dihedral_deg"])
+    verify("main_le_sweep_deg", vsp.GetParmVal(gid, "Sweep", "XSec_1"), P["main_le_sweep_deg"])
+    verify("main_taper", vsp.GetParmVal(gid, "Taper", "XSec_1"), P["main_taper"])
+    root_le = vsp.CompPnt01(gid, 0, 0.0, 0.5)
+    verify("main_root_le_x_ft", root_le.x(), P["wing_x"], 1e-6)
+    verify("main_root_le_z_ft", root_le.z(), P["wing_z"], 1e-6)
+    tip_le = vsp.CompPnt01(gid, 0, 1.0, 0.5)
+    tip_te = vsp.CompPnt01(gid, 0, 1.0, 0.0)
+    tip_chord = abs(tip_te.x() - tip_le.x())
+    twist = math.radians(P["main_tip_twist_deg"])
+    twist_loc = vsp.GetParmVal(gid, "Twist_Location", "XSec_1")
+    expected_tip_x = (
+        P["wing_x"]
+        + P["main_span"] / 2.0 * math.tan(math.radians(P["main_le_sweep_deg"]))
+        + twist_loc * tip_chord * (1.0 - math.cos(twist))
+    )
+    verify("main_tip_le_x_ft", tip_le.x(), expected_tip_x, 1e-4)
+    verify("main_tip_chord_ft", tip_chord, P["winglet_root_chord"], 1e-6)
+
+    for name, side in (("Left main-wing tip winglet", -1), ("Right main-wing tip winglet", 1)):
+        winglet = by_name[name]
+        root = vsp.CompPnt01(winglet, 0, 0.0, 0.5)
+        top = vsp.CompPnt01(winglet, 0, 1.0, 0.5)
+        tip_aft = vsp.CompPnt01(winglet, 0, 1.0, 0.0)
+        verify(f"{name}: root_x_ft", root.x(), P["winglet_le_station"], 1e-6)
+        verify(f"{name}: root_y_ft", root.y(), side * P["main_span"] / 2.0, 1e-6)
+        verify(f"{name}: root_z_ft", root.z(), P["wing_z"], 1e-6)
+        verify(f"{name}: vertical_rise_ft", top.z() - root.z(), P["winglet_height"], 1e-6)
+        verify(f"{name}: lateral_lean_ft", top.y() - root.y(), 0.0, 1e-6)
+        verify(f"{name}: aft_station_ft", tip_aft.x(), P["winglet_aft_station"], 1e-6)
+        verify(f"{name}: root_chord_ft", vsp.GetParmVal(winglet, "Root_Chord", "XSec_1"), P["winglet_root_chord"])
+        verify(f"{name}: taper", vsp.GetParmVal(winglet, "Taper", "XSec_1"), P["winglet_taper"])
+        verify(f"{name}: symmetry_disabled", vsp.GetParmVal(winglet, "Sym_Planar_Flag", "Sym"), 0)
+
+    gid = by_name["Canard — Roncz 1145MS verification needed"]
+    verify("canard_le_sweep_deg", vsp.GetParmVal(gid, "Sweep", "XSec_1"), P["canard_le_sweep_deg"])
+    verify("canard_taper", vsp.GetParmVal(gid, "Taper", "XSec_1"), P["canard_taper"])
+    root = vsp.CompPnt01(gid, 0, 0.0, 0.5)
+    tip = vsp.CompPnt01(gid, 0, 1.0, 0.5)
+    verify("canard_root_le_x_ft", root.x(), P["canard_x"], 1e-6)
+    verify("canard_root_le_z_ft", root.z(), P["canard_z"], 1e-6)
+    verify("canard_leading_edge_x_offset_ft", tip.x() - root.x(), 0.0, 1e-6)
+
     gid = by_name["Fuselage — plan-derived loft required"]
     verify("fuselage_length_ft", vsp.GetParmVal(gid, "Length", "Design"), P["fuselage_length"])
     surf = vsp.GetXSecSurf(gid, 0)
@@ -205,6 +348,18 @@ def validate_model():
         for i in range(vsp.GetNumXSec(surf))
     )
     verify("fuselage_max_section_dimension_ft", maximum, P["fuselage_max_dia"])
+    lo, hi = box(gid)
+    verify("fuselage_nose_x_ft", lo[0], 0.0, 1e-6)
+    verify("fuselage_tail_x_ft", hi[0], P["fuselage_length"], 1e-6)
+    verify("fuselage_centre_z_ft", (lo[2] + hi[2]) / 2.0, P["fuselage_z"], 1e-6)
+
+    lows = [box(g)[0] for g in geoms]
+    highs = [box(g)[1] for g in geoms]
+    verify("nose_datum_x_ft", min(p[0] for p in lows), 0.0, 1e-6)
+    verify("ground_datum_z_ft", min(p[2] for p in lows), 0.0, 1e-6)
+    verify("aftmost_station_ft", max(p[0] for p in highs), P["winglet_aft_station"], 1e-6)
+    verify("highest_point_ft", max(p[2] for p in highs), P["wing_z"] + P["winglet_height"], 1e-6)
+
     check_errors("Validate model")
     return checks
 
@@ -231,17 +386,35 @@ report = {
     "model": OUTFILE.name,
     "units": {"length": "ft", "area": "ft^2", "angle": "deg"},
     "parameters": P,
+    "input_provenance": {
+        "drawing": "COZY3V.DXF",
+        "drawing_sha256": hashlib.sha256((HERE / "COZY3V.DXF").read_bytes()).hexdigest().upper(),
+        "dimension_table": "dimensions.json (schema cozy-dimensions/1), written by measure_dxf.py",
+        "datum": "X = 0 on the plan-view nose outline 678; Z = 0 on side-view ground line 3217",
+        "airfoils": {
+            "main_wing_and_winglet": "airfoil/e1230.dat",
+            "canard": "airfoil/r1145ms.dat",
+        },
+        "winglet_sweep": "Solved at build time from the winglet root chord so the tip trailing edge lands on winglet_aft_station",
+        "main_tip_twist_deg": "Provisional -6.5 deg; not established by the drawing",
+        "internal_envelopes": "Inherited placeholder stations and sizes, shifted to the ground datum",
+        "gear": "Wheel-envelope pods sized by the drawn wheel diameters, resting on the ground datum",
+    },
     "validation_scope": "Parameter consistency and serialization only; not aerodynamic validation",
     "passed": passed,
     "before_save": before_save,
     "after_reload": after_save,
     "limitations": [
-        "Dimensions have not been traced to drawings or manual pages",
-        "Winglets retain the original placeholder location and rotation; not validated as vertical tip surfaces",
-        "Airfoils, sweep, taper, twist and incidence are not plan-validated",
+        "Dimensions are traced to COZY3V.DXF through dimensions.json, not to a licensed plan set",
+        "Wing and canard are single trapezoids; strakes, elevators and ailerons are not separate surfaces",
+        "The winglet has no cant; the front view shows roughly 4 deg of inward lean that is not modelled",
+        "The drawing puts the winglet root leading edge 0.292141 ft aft of the straight-line wing tip leading edge, "
+        "so the winglet root and the wing tip sections only partly overlap chordwise",
         "Fuselage retains scaled default sections, not a plan-derived loft",
-        "Propeller mode and orientation are unverified; no propulsion analysis",
-        "Internal envelopes are not calibrated masses and remain in SET_ALL",
+        "Spinner, cowl, gear, strakes and internal volumes are placeholder bodies, not structure",
+        "Propeller disc is a reference only; no propulsion or aeroelastic model",
+        "Airfoil sections are loaded from files but incidence, twist and camber effects are not validated",
+        "Longitudinal stations carry about +/-0.05 ft of inter-view uncertainty (plan vs side)",
         "No aerodynamic, trim, stability, stall, structural or flightworthiness assessment",
     ],
 }

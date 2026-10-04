@@ -1,0 +1,332 @@
+{
+  "model": "Cozy_MKIV_Baseline.vsp3",
+  "dimension_table": "dimensions.json",
+  "schema": "cozy-dimensions/1",
+  "scored_rows": 28,
+  "failures": [],
+  "warnings": [
+    "canard_max_chord_ft"
+  ],
+  "info": {
+    "wing_tip_twist_le_rise_ft": -0.048537,
+    "winglet_root_setback_from_wing_tip_le_ft": 0.294448,
+    "winglet_root_te_overhang_beyond_wing_tip_te_ft": 0.294448
+  },
+  "results": [
+    {
+      "id": "overall_length_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 16.916667,
+      "model_value": 16.869224,
+      "deviation": -0.047443,
+      "tolerance": 0.05,
+      "model_parameter": "overall_length"
+    },
+    {
+      "id": "overall_span_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 28.125,
+      "model_value": 28.125,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "main_span"
+    },
+    {
+      "id": "main_planform_area_ft2",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 88.552617,
+      "model_value": 88.552617,
+      "deviation": 0.0,
+      "tolerance": 0.5,
+      "model_parameter": "main_area"
+    },
+    {
+      "id": "canard_planform_area_ft2",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 12.922935,
+      "model_value": 12.922935,
+      "deviation": 0.0,
+      "tolerance": 0.5,
+      "model_parameter": "canard_area"
+    },
+    {
+      "id": "canard_span_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 12.563641,
+      "model_value": 12.563641,
+      "deviation": -0.0,
+      "tolerance": 0.05,
+      "model_parameter": "canard_span"
+    },
+    {
+      "id": "canard_le_from_nose_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 2.139451,
+      "model_value": 2.139451,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "canard_x"
+    },
+    {
+      "id": "canard_le_sweep_deg",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 0.0,
+      "model_value": 0.0,
+      "deviation": 0.0,
+      "tolerance": 0.5,
+      "model_parameter": "canard_le_sweep_deg"
+    },
+    {
+      "id": "canard_taper",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 1.0,
+      "model_value": 1.0,
+      "deviation": 0.0,
+      "tolerance": 0.01,
+      "model_parameter": "canard_taper"
+    },
+    {
+      "id": "canard_max_chord_ft",
+      "state": "warn",
+      "scored": false,
+      "drawing_value": 1.125163,
+      "model_value": 1.028598,
+      "deviation": -0.096565,
+      "tolerance": 0.05,
+      "model_parameter": null
+    },
+    {
+      "id": "main_le_sweep_deg",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 21.583805,
+      "model_value": 21.593514,
+      "deviation": 0.009709,
+      "tolerance": 0.5,
+      "model_parameter": "main_le_sweep_deg"
+    },
+    {
+      "id": "main_wing_taper",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 0.374299,
+      "model_value": 0.371893,
+      "deviation": -0.002406,
+      "tolerance": 0.01,
+      "model_parameter": "main_taper"
+    },
+    {
+      "id": "main_root_le_from_nose_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 7.883885,
+      "model_value": 7.883885,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "wing_x"
+    },
+    {
+      "id": "main_tip_chord_ft",
+      "state": "match",
+      "scored": false,
+      "drawing_value": 1.717073,
+      "model_value": 1.704024,
+      "deviation": -0.013049,
+      "tolerance": 0.05,
+      "model_parameter": null
+    },
+    {
+      "id": "fuselage_length_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 14.01936,
+      "model_value": 14.01936,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "fuselage_length"
+    },
+    {
+      "id": "fuselage_max_width_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 3.425352,
+      "model_value": 3.425352,
+      "deviation": -0.0,
+      "tolerance": 0.05,
+      "model_parameter": "fuselage_max_dia"
+    },
+    {
+      "id": "spinner_length_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 1.351016,
+      "model_value": 1.351016,
+      "deviation": -0.0,
+      "tolerance": 0.05,
+      "model_parameter": "spinner_length"
+    },
+    {
+      "id": "spinner_diameter_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 0.924684,
+      "model_value": 0.924684,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "spinner_diameter"
+    },
+    {
+      "id": "winglet_plan_length_ft",
+      "state": "match",
+      "scored": false,
+      "drawing_value": 3.124995,
+      "model_value": 3.124995,
+      "deviation": -0.0,
+      "tolerance": 0.05,
+      "model_parameter": null
+    },
+    {
+      "id": "winglet_le_from_nose_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 13.744229,
+      "model_value": 13.744229,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "winglet_le_station"
+    },
+    {
+      "id": "winglet_aft_station_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 16.869224,
+      "model_value": 16.869224,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "winglet_aft_station"
+    },
+    {
+      "id": "winglet_taper",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 0.257932,
+      "model_value": 0.257932,
+      "deviation": 0.0,
+      "tolerance": 0.01,
+      "model_parameter": "winglet_taper"
+    },
+    {
+      "id": "winglet_height_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 4.525088,
+      "model_value": 4.525088,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "winglet_height"
+    },
+    {
+      "id": "canard_center_height_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 3.940886,
+      "model_value": 3.940886,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "canard_z"
+    },
+    {
+      "id": "wing_center_height_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 3.769542,
+      "model_value": 3.769542,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "wing_z"
+    },
+    {
+      "id": "prop_center_height_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 4.226773,
+      "model_value": 4.226773,
+      "deviation": -0.0,
+      "tolerance": 0.05,
+      "model_parameter": "prop_z"
+    },
+    {
+      "id": "prop_diameter_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 5.685553,
+      "model_value": 5.695797,
+      "deviation": 0.010244,
+      "tolerance": 0.05,
+      "model_parameter": "prop_diameter"
+    },
+    {
+      "id": "prop_station_from_nose_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 14.191762,
+      "model_value": 14.189251,
+      "deviation": -0.002511,
+      "tolerance": 0.05,
+      "model_parameter": "prop_x"
+    },
+    {
+      "id": "canopy_top_height_ft",
+      "state": "not-measured",
+      "drawing_value": 5.532196
+    },
+    {
+      "id": "fuselage_center_height_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 3.356805,
+      "model_value": 3.356805,
+      "deviation": -0.0,
+      "tolerance": 0.05,
+      "model_parameter": "fuselage_z"
+    },
+    {
+      "id": "nose_wheel_diameter_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 0.834941,
+      "model_value": 0.834941,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "nose_wheel_diameter"
+    },
+    {
+      "id": "main_wheel_diameter_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 0.865234,
+      "model_value": 0.865234,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "main_wheel_diameter"
+    },
+    {
+      "id": "main_gear_track_ft",
+      "state": "match",
+      "scored": true,
+      "drawing_value": 5.884759,
+      "model_value": 5.884759,
+      "deviation": 0.0,
+      "tolerance": 0.05,
+      "model_parameter": "main_gear_track"
+    }
+  ]
+}

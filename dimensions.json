@@ -1,0 +1,1360 @@
+{
+  "schema": "cozy-dimensions/1",
+  "source": {
+    "file": "COZY3V.DXF",
+    "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+    "digitised_record": "COZY3V_digitized.json",
+    "digitised_sha256": "C58DA7ED315FFE36FABDF39AFE36103822A3B9D1E0922A61D2DF8D145CEE0243",
+    "model_script": "Cozy_MKIV_OpenVSP_Baseline.py"
+  },
+  "units": {
+    "length": "ft",
+    "area": "ft2",
+    "angle": "deg"
+  },
+  "scale": {
+    "ft_per_unit": 4.396697201227543,
+    "assert_rel_tol": 1e-09,
+    "max_rel_spread": 1.1918611713282594e-14,
+    "estimates": [
+      {
+        "text": "28' 1.50\"",
+        "axis": "x",
+        "value_ft": 28.125,
+        "parts": {
+          "feet": 28.0,
+          "inches": 1.5
+        },
+        "arrow_span_units": 6.3968471588509,
+        "scale_ft_per_unit": 4.396697201227526,
+        "text_index": 3278,
+        "text_position_units": [
+          5.3177965590907,
+          7.4712711939269
+        ],
+        "arrow_indices": [
+          3283,
+          3284
+        ],
+        "arrows_units": [
+          [
+            1.8547761199127,
+            7.4144434007663
+          ],
+          [
+            8.2516232787636,
+            7.4144434007663
+          ]
+        ]
+      },
+      {
+        "text": "28' 1.50\"",
+        "axis": "x",
+        "value_ft": 28.125,
+        "parts": {
+          "feet": 28.0,
+          "inches": 1.5
+        },
+        "arrow_span_units": 6.396847158850901,
+        "scale_ft_per_unit": 4.396697201227525,
+        "text_index": 3285,
+        "text_position_units": [
+          5.3104270465523,
+          2.5437244633383
+        ],
+        "arrow_indices": [
+          3290,
+          3291
+        ],
+        "arrows_units": [
+          [
+            1.8474066073744,
+            2.4868966701777
+          ],
+          [
+            8.2442537662253,
+            2.4868966701777
+          ]
+        ]
+      },
+      {
+        "text": "16' 11.00\"",
+        "axis": "y",
+        "value_ft": 16.916666666666668,
+        "parts": {
+          "feet": 16.0,
+          "inches": 11.0
+        },
+        "arrow_span_units": 3.8475851059162003,
+        "scale_ft_per_unit": 4.396697201227577,
+        "text_index": 3292,
+        "text_position_units": [
+          1.5379491107993,
+          4.7213932133019
+        ],
+        "arrow_indices": [
+          3297,
+          3298
+        ],
+        "arrows_units": [
+          [
+            1.267213862359,
+            2.7407728671832
+          ],
+          [
+            1.267213862359,
+            6.5883579730994
+          ]
+        ]
+      }
+    ],
+    "provenance": "Solved from dimension texts and LONGARROW positions inside COZY3V.DXF; no scale was assumed."
+  },
+  "datums": {
+    "x_origin": "nose tip",
+    "x_axis": "+x aft",
+    "side_view_ground": "LINE 3217 at x=43.980561 ft",
+    "front_view_ground": "lowest outline y=1.574515 ft (wheel contact)",
+    "plan_view_nose": "min outline y=12.092015 ft",
+    "side_view_nose": "min outline y=7.222725 ft",
+    "view_station_offset_ft": 4.86929
+  },
+  "tolerances": {
+    "ft": 0.05,
+    "ft2": 0.5,
+    "deg": 0.5,
+    "ratio": 0.01
+  },
+  "status_counts": {
+    "match": 28,
+    "off": 0,
+    "no-model-value": 4
+  },
+  "rows": [
+    {
+      "id": "overall_length_ft",
+      "label": "Overall length, nose to aftmost winglet tip",
+      "unit": "ft",
+      "method": "text-dimension",
+      "drawing_value": 16.916667,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5",
+          "8"
+        ],
+        "entities": [
+          3292,
+          3297,
+          3298,
+          3293,
+          3294,
+          3295,
+          3296
+        ],
+        "detail": "Overall length dimension of the plan view."
+      },
+      "cross_checks": [
+        {
+          "label": "arrow span",
+          "value_ft": 16.916667,
+          "entities": [
+            3297,
+            3298
+          ]
+        },
+        {
+          "label": "top outline nose to winglet aft tip",
+          "value_ft": 16.869224,
+          "entities": [
+            678,
+            951,
+            1059
+          ]
+        }
+      ],
+      "model_parameter": "overall_length",
+      "model_value": 16.916667,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "The model reports overall_length but no geometry is driven by it; the modelled overall length is fuselage length plus winglet overhang."
+    },
+    {
+      "id": "overall_span_ft",
+      "label": "Overall span, winglet tip to winglet tip",
+      "unit": "ft",
+      "method": "text-dimension",
+      "drawing_value": 28.125,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5",
+          "8"
+        ],
+        "entities": [
+          3278,
+          3283,
+          3284,
+          3279,
+          3280,
+          3281,
+          3282
+        ],
+        "detail": "Span dimension of the plan view."
+      },
+      "cross_checks": [
+        {
+          "label": "top-view arrow span",
+          "value_ft": 28.125,
+          "entities": [
+            3283,
+            3284
+          ]
+        },
+        {
+          "label": "front-view dimension 3285",
+          "value_ft": 28.125,
+          "entities": [
+            3285,
+            3290,
+            3291
+          ]
+        },
+        {
+          "label": "front-view outline extent (winglets 1355/1458)",
+          "value_ft": 28.04848,
+          "entities": [
+            1355,
+            1458
+          ]
+        },
+        {
+          "label": "top-view outline extent (wing panels 927/1035)",
+          "value_ft": 28.150596,
+          "entities": [
+            927,
+            1035
+          ]
+        },
+        {
+          "label": "front-view wing panel band (1385/1488)",
+          "value_ft": 27.663984,
+          "entities": [
+            1385,
+            1488
+          ]
+        }
+      ],
+      "model_parameter": "main_span",
+      "model_value": 28.125,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "The wing panel band of the front view stops 0.19 ft inboard of the dimensioned extremity; the winglet outline reaches it. The plan view wing panels reach the same extremity."
+    },
+    {
+      "id": "main_planform_area_ft2",
+      "label": "Main wing planform area, wing panels plus strakes plus aileron strips",
+      "unit": "ft2",
+      "method": "polyline-measured",
+      "drawing_value": 88.552617,
+      "tolerance": 0.5,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          927,
+          1035,
+          974,
+          1082,
+          514,
+          596
+        ],
+        "detail": "Sum of shoelace areas of six edge-adjacent closed outlines."
+      },
+      "cross_checks": [
+        {
+          "label": "wing panels only",
+          "value_ft2": 51.637456,
+          "entities": [
+            927,
+            1035
+          ]
+        },
+        {
+          "label": "aileron strips only",
+          "value_ft2": 3.837762,
+          "entities": [
+            974,
+            1082
+          ]
+        },
+        {
+          "label": "strakes only",
+          "value_ft2": 33.077399,
+          "entities": [
+            514,
+            596
+          ]
+        }
+      ],
+      "model_parameter": "main_area",
+      "model_value": 88.552617,
+      "deviation": -0.0,
+      "status": "match",
+      "note": "The drawn strakes stop at the fuselage sides, so the centre strip under the fuselage is not drawn. The model main wing is a single full-span trapezoid of equal total area; the shapes are not identical."
+    },
+    {
+      "id": "canard_planform_area_ft2",
+      "label": "Canard planform area including elevators",
+      "unit": "ft2",
+      "method": "polyline-measured",
+      "drawing_value": 12.922935,
+      "tolerance": 0.5,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          410,
+          1089,
+          1096
+        ],
+        "detail": "Sum of shoelace areas; the elevator strips do not overlap outline 410."
+      },
+      "cross_checks": [
+        {
+          "label": "canard panel only",
+          "value_ft2": 10.821097,
+          "entities": [
+            410
+          ]
+        }
+      ],
+      "model_parameter": "canard_area",
+      "model_value": 12.922935,
+      "deviation": -0.0,
+      "status": "match",
+      "note": null
+    },
+    {
+      "id": "canard_span_ft",
+      "label": "Canard span",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 12.563641,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          410
+        ],
+        "detail": "Max x minus min x of the canard outline."
+      },
+      "cross_checks": [
+        {
+          "label": "front-view canard panels 1399/1344/1502",
+          "value_ft": 12.380766,
+          "entities": [
+            1399,
+            1344,
+            1502
+          ]
+        }
+      ],
+      "model_parameter": "canard_span",
+      "model_value": 12.563641,
+      "deviation": -0.0,
+      "status": "match",
+      "note": "Front view stops short of the plan view by the rounded canard tips."
+    },
+    {
+      "id": "canard_le_from_nose_ft",
+      "label": "Canard leading edge station from nose",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 2.139451,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          410,
+          678
+        ],
+        "detail": "Both outlines on layer 5 of the plan view; station axis is +y aft."
+      },
+      "cross_checks": [
+        {
+          "label": "side-view canard 2737 station range",
+          "value_ft": [
+            2.078299,
+            3.272295
+          ],
+          "entities": [
+            2737
+          ]
+        }
+      ],
+      "model_parameter": "canard_x",
+      "model_value": 2.139451,
+      "deviation": 0.0,
+      "status": "match",
+      "note": null
+    },
+    {
+      "id": "canard_le_sweep_deg",
+      "label": "Canard leading edge sweep",
+      "unit": "deg",
+      "method": "polyline-measured",
+      "drawing_value": 0.0,
+      "tolerance": 0.5,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          410
+        ],
+        "detail": "Straight leading edge segment of the canard."
+      },
+      "cross_checks": [],
+      "model_parameter": "canard_le_sweep_deg",
+      "model_value": 0.0,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "The model sets Sweep XSec_1 of the canard to 0.0 directly."
+    },
+    {
+      "id": "canard_taper",
+      "label": "Canard taper ratio",
+      "unit": "ratio",
+      "method": "polyline-measured",
+      "drawing_value": 1.0,
+      "tolerance": 0.01,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          410,
+          1089,
+          1096
+        ],
+        "detail": "Both leading edge and elevator trailing edge are straight and constant in y, so the idealised canard trapezoid is rectangular."
+      },
+      "cross_checks": [],
+      "model_parameter": "canard_taper",
+      "model_value": 1.0,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "The drawn tips are rounded, so the panel plus elevator shoelace area is smaller than a true rectangle; the model keeps the span and area drivers and the rectangular shape."
+    },
+    {
+      "id": "canard_max_chord_ft",
+      "label": "Canard maximum chord",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 1.125163,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          410,
+          1089,
+          1096
+        ],
+        "detail": "Max y minus min y of canard and elevator outlines."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": null
+    },
+    {
+      "id": "main_le_sweep_deg",
+      "label": "Main wing leading edge sweep",
+      "unit": "deg",
+      "method": "polyline-measured",
+      "drawing_value": 21.583805,
+      "tolerance": 0.5,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          927,
+          1035
+        ],
+        "detail": "Angle of the straight leading edge segment measured from the span axis."
+      },
+      "cross_checks": [
+        {
+          "label": "right panel 1035",
+          "value_deg": 21.583805,
+          "entities": [
+            1035
+          ]
+        }
+      ],
+      "model_parameter": "main_le_sweep_deg",
+      "model_value": 21.583805,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "The baseline wing is built with Sweep XSec_1 = 0."
+    },
+    {
+      "id": "main_wing_taper",
+      "label": "Main wing taper ratio",
+      "unit": "ratio",
+      "method": "polyline-measured",
+      "drawing_value": 0.374299,
+      "tolerance": 0.01,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          927,
+          1035
+        ],
+        "detail": "Both edge lines extrapolated to the centreline and to the half-span."
+      },
+      "cross_checks": [
+        {
+          "label": "root chord",
+          "value_ft": 4.587439,
+          "entities": [
+            927,
+            1035
+          ]
+        },
+        {
+          "label": "tip chord at the half-span",
+          "value_ft": 1.717073,
+          "entities": [
+            927,
+            1035
+          ]
+        }
+      ],
+      "model_parameter": "main_taper",
+      "model_value": 0.374299,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "The model wing is a single full-span trapezoid driven by span and area, so root and tip chord follow from the taper ratio."
+    },
+    {
+      "id": "main_root_le_from_nose_ft",
+      "label": "Main wing leading edge station at the centreline",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 7.883885,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          927,
+          1035,
+          678
+        ],
+        "detail": "Swept leading edge line extended to the centreline x of the plan view."
+      },
+      "cross_checks": [],
+      "model_parameter": "wing_x",
+      "model_value": 7.883885,
+      "deviation": -0.0,
+      "status": "match",
+      "note": "The drawn panels start at the strake junction, so the centreline leading edge is an extrapolation of the outer panel leading edge."
+    },
+    {
+      "id": "main_tip_chord_ft",
+      "label": "Main wing tip chord",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 1.717073,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          927,
+          1035
+        ],
+        "detail": "Tip corner points of the wing outline."
+      },
+      "cross_checks": [],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": "The panel is cut along the rounded wing tip, so the drawn tip edge is a diagonal longer than the local chord; the local chord is used here. The model derives root and tip chord from the SPAN/AREA/TAPER driver group, so no independent tip chord parameter exists."
+    },
+    {
+      "id": "fuselage_length_ft",
+      "label": "Fuselage length, nose to tail",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 14.01936,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          678,
+          457
+        ],
+        "detail": "Forward and aft fuselage outlines of the plan view."
+      },
+      "cross_checks": [
+        {
+          "label": "side view outline 1927 + 2044",
+          "value_ft": 14.061169,
+          "entities": [
+            1927,
+            2044
+          ]
+        }
+      ],
+      "model_parameter": "fuselage_length",
+      "model_value": 14.01936,
+      "deviation": 0.0,
+      "status": "match",
+      "note": null
+    },
+    {
+      "id": "fuselage_max_width_ft",
+      "label": "Fuselage maximum width",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 3.425352,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          678
+        ],
+        "detail": "Max x minus min x of the forward fuselage outline."
+      },
+      "cross_checks": [
+        {
+          "label": "front-view fuselage section 1148",
+          "value_ft": 3.462434,
+          "entities": [
+            1148
+          ]
+        }
+      ],
+      "model_parameter": "fuselage_max_dia",
+      "model_value": 3.425352,
+      "deviation": 0.0,
+      "status": "match",
+      "note": null
+    },
+    {
+      "id": "spinner_length_ft",
+      "label": "Spinner length",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 1.351016,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          478
+        ],
+        "detail": "Max y minus min y of the spinner outline."
+      },
+      "cross_checks": [
+        {
+          "label": "side view spinner 3032",
+          "value_ft": 1.31153,
+          "entities": [
+            3032
+          ]
+        }
+      ],
+      "model_parameter": "spinner_length",
+      "model_value": 1.351016,
+      "deviation": -0.0,
+      "status": "match",
+      "note": null
+    },
+    {
+      "id": "spinner_diameter_ft",
+      "label": "Spinner diameter",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 0.924684,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          478
+        ],
+        "detail": "Max x minus min x of the spinner outline."
+      },
+      "cross_checks": [
+        {
+          "label": "side view spinner 3032 height",
+          "value_ft": 0.844407,
+          "entities": [
+            3032
+          ]
+        }
+      ],
+      "model_parameter": "spinner_diameter",
+      "model_value": 0.924684,
+      "deviation": 0.0,
+      "status": "match",
+      "note": null
+    },
+    {
+      "id": "winglet_plan_length_ft",
+      "label": "Winglet chordwise length in plan",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 3.124995,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          951,
+          1059
+        ],
+        "detail": "Max y minus min y of the two winglet plan projections."
+      },
+      "cross_checks": [
+        {
+          "label": "side view winglet 2925",
+          "value_ft": 3.266699,
+          "entities": [
+            2925
+          ]
+        }
+      ],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": null
+    },
+    {
+      "id": "winglet_le_from_nose_ft",
+      "label": "Winglet root leading edge station",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 13.744229,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          678,
+          951,
+          1059
+        ],
+        "detail": "Min y of the winglet plan projections minus the nose station."
+      },
+      "cross_checks": [
+        {
+          "label": "main wing tip leading edge at the half-span",
+          "value_ft": 13.452088,
+          "entities": [
+            927,
+            1035
+          ]
+        },
+        {
+          "label": "side view winglet leading edge at the wing plane",
+          "value_ft": 14.032498,
+          "entities": [
+            2925,
+            2085,
+            3217
+          ]
+        }
+      ],
+      "model_parameter": "winglet_le_station",
+      "model_value": 13.744229,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "The winglet sits aft of the wing tip leading edge; the setback is 0.292141 ft."
+    },
+    {
+      "id": "winglet_aft_station_ft",
+      "label": "Winglet aftmost station",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 16.869224,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "top",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          678,
+          951,
+          1059
+        ],
+        "detail": "Max y of the winglet plan projections minus the nose station."
+      },
+      "cross_checks": [
+        {
+          "label": "dimensioned overall length",
+          "value_ft": 16.916667,
+          "entities": [
+            3292,
+            3297,
+            3298
+          ]
+        },
+        {
+          "label": "side view winglet 2925 aft station",
+          "value_ft": 17.046159,
+          "entities": [
+            2925
+          ]
+        }
+      ],
+      "model_parameter": "winglet_aft_station",
+      "model_value": 16.869224,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "This is the aftmost point of the whole airframe and therefore sets the modelled overall length."
+    },
+    {
+      "id": "winglet_taper",
+      "label": "Winglet taper ratio",
+      "unit": "ratio",
+      "method": "polyline-measured",
+      "drawing_value": 0.257932,
+      "tolerance": 0.01,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          2925,
+          2085,
+          3217,
+          1355
+        ],
+        "detail": "Leading edge points 18->17 and trailing edge points 101->102 extrapolated to the wing plane and to the front-view tip height."
+      },
+      "cross_checks": [],
+      "model_parameter": "winglet_taper",
+      "model_value": 0.257932,
+      "deviation": -0.0,
+      "status": "match",
+      "note": "The side view winglet root chord is 0.05 ft longer than the main wing tip chord drawn in plan; the model root chord follows the wing."
+    },
+    {
+      "id": "winglet_height_ft",
+      "label": "Winglet height above the wing",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 4.525088,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "front",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          1355,
+          1458
+        ],
+        "detail": "Max y minus min y of the winglet outlines in the front view."
+      },
+      "cross_checks": [
+        {
+          "label": "side view winglet 2925",
+          "value_ft": 4.7408,
+          "entities": [
+            2925
+          ]
+        },
+        {
+          "label": "front view height of winglet base",
+          "value_ft": 3.555504,
+          "entities": [
+            1355
+          ]
+        }
+      ],
+      "model_parameter": "winglet_height",
+      "model_value": 4.525088,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "Front and side views disagree on the winglet height by 0.216 ft; the front view is used because it shows the winglet full height without foreshortening."
+    },
+    {
+      "id": "canard_center_height_ft",
+      "label": "Canard centre height above ground",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 3.940886,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          2737,
+          3217
+        ],
+        "detail": "Ground datum is LINE 3217, the wheels of the side view rest on it."
+      },
+      "cross_checks": [
+        {
+          "label": "front view canard 1399/1344/1502",
+          "value_ft": 4.229755,
+          "entities": [
+            1399,
+            1344,
+            1502
+          ]
+        }
+      ],
+      "model_parameter": "canard_z",
+      "model_value": 3.940886,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "Front view sits higher than the side view; the side view carries the explicit ground line and is used as the height datum."
+    },
+    {
+      "id": "wing_center_height_ft",
+      "label": "Main wing centre height above ground",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 3.769542,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          2085,
+          3217
+        ],
+        "detail": "Wing outline of the side view; ground datum LINE 3217."
+      },
+      "cross_checks": [
+        {
+          "label": "front view wing band 1385/1488",
+          "value_ft": 3.883666,
+          "entities": [
+            1385,
+            1488
+          ]
+        }
+      ],
+      "model_parameter": "wing_z",
+      "model_value": 3.769542,
+      "deviation": -0.0,
+      "status": "match",
+      "note": null
+    },
+    {
+      "id": "prop_center_height_ft",
+      "label": "Propeller centre height above ground",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 4.226773,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          2780,
+          2786,
+          3217
+        ],
+        "detail": "Blade outlines bound the propeller disc; ground datum LINE 3217."
+      },
+      "cross_checks": [
+        {
+          "label": "side view spinner 3032 centre",
+          "value_ft": 4.206893,
+          "entities": [
+            3032
+          ]
+        }
+      ],
+      "model_parameter": "prop_z",
+      "model_value": 4.226773,
+      "deviation": 0.0,
+      "status": "match",
+      "note": null
+    },
+    {
+      "id": "prop_diameter_ft",
+      "label": "Propeller diameter",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 5.685553,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          2780,
+          2786
+        ],
+        "detail": "Outer radii of both blades about the disc centre give the diameter."
+      },
+      "cross_checks": [
+        {
+          "label": "blade gap at hub (inner radii)",
+          "value_ft": 0.855767,
+          "entities": [
+            2780,
+            2786
+          ]
+        }
+      ],
+      "model_parameter": "prop_diameter",
+      "model_value": 5.685553,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "The baseline hard-coded the propeller disk diameter at 5.80 ft."
+    },
+    {
+      "id": "prop_station_from_nose_ft",
+      "label": "Propeller disc station from nose",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 14.191762,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          2780,
+          2786
+        ],
+        "detail": "Axial extent of both blade outlines about the disc plane."
+      },
+      "cross_checks": [
+        {
+          "label": "side view spinner 3032 forward station",
+          "value_ft": 14.046244,
+          "entities": [
+            3032
+          ]
+        },
+        {
+          "label": "side view spinner 3032 aft station",
+          "value_ft": 15.357774,
+          "entities": [
+            3032
+          ]
+        },
+        {
+          "label": "top view spinner 478 forward station",
+          "value_ft": 14.064531,
+          "entities": [
+            478
+          ]
+        },
+        {
+          "label": "top view spinner 478 aft station",
+          "value_ft": 15.415547,
+          "entities": [
+            478
+          ]
+        }
+      ],
+      "model_parameter": "prop_x",
+      "model_value": 14.191762,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "Station origins are per view: each view is referenced to its own nose outline, so the raw sheet coordinates are not comparable. After that correction the views still disagree slightly - the spinner forward station differs by 0.018 ft and the canard leading edge by 0.061 ft between the plan and side views - so longitudinal stations carry about +/-0.05 ft of inter-view uncertainty. This row uses the side view because the propeller disc is only drawn there."
+    },
+    {
+      "id": "canopy_top_height_ft",
+      "label": "Canopy top height above ground",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 5.532196,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          2177,
+          3217
+        ],
+        "detail": "Canopy outline of the side view."
+      },
+      "cross_checks": [
+        {
+          "label": "front view canopy 1602",
+          "value_ft": 5.717688,
+          "entities": [
+            1602
+          ]
+        }
+      ],
+      "model_parameter": null,
+      "model_value": null,
+      "deviation": null,
+      "status": "no-model-value",
+      "note": null
+    },
+    {
+      "id": "fuselage_center_height_ft",
+      "label": "Fuselage section centre height above ground",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 3.356805,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          1927,
+          3217
+        ],
+        "detail": "Forward fuselage outline of the side view."
+      },
+      "cross_checks": [
+        {
+          "label": "front view fuselage section 1148",
+          "value_ft": 3.490768,
+          "entities": [
+            1148
+          ]
+        },
+        {
+          "label": "rear fuselage 2044",
+          "value_ft": 3.654052,
+          "entities": [
+            2044
+          ]
+        }
+      ],
+      "model_parameter": "fuselage_z",
+      "model_value": 3.356805,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "The model fuselage cross sections are still scaled defaults, so only the datum can be matched, not the section shape."
+    },
+    {
+      "id": "nose_wheel_diameter_ft",
+      "label": "Nose wheel diameter",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 0.834941,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          2458,
+          3217
+        ],
+        "detail": "Nose wheel outline of the side view."
+      },
+      "cross_checks": [
+        {
+          "label": "front view nose wheel 1254",
+          "value_ft": 0.759902,
+          "entities": [
+            1254
+          ]
+        }
+      ],
+      "model_parameter": "nose_wheel_diameter",
+      "model_value": 0.834941,
+      "deviation": -0.0,
+      "status": "match",
+      "note": "The model gear placeholders are wheel-envelope pods sized by this diameter and resting on the ground datum; they are not a landing-gear model."
+    },
+    {
+      "id": "main_wheel_diameter_ft",
+      "label": "Main wheel diameter",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 0.865234,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "side",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          2625,
+          3217
+        ],
+        "detail": "Main wheel outline of the side view."
+      },
+      "cross_checks": [
+        {
+          "label": "front view main wheel 1788",
+          "value_ft": 0.760897,
+          "entities": [
+            1788
+          ]
+        }
+      ],
+      "model_parameter": "main_wheel_diameter",
+      "model_value": 0.865234,
+      "deviation": -0.0,
+      "status": "match",
+      "note": "The model gear placeholders are wheel-envelope pods sized by this diameter and resting on the ground datum; they are not a landing-gear model."
+    },
+    {
+      "id": "main_gear_track_ft",
+      "label": "Main gear track, wheel centre to wheel centre",
+      "unit": "ft",
+      "method": "polyline-measured",
+      "drawing_value": 5.884759,
+      "tolerance": 0.05,
+      "source": {
+        "file": "COZY3V.DXF",
+        "sha256": "AF20FA74DFE3E98B675D98F86DBC1F713AA0B4A1386A1F7A632D1B5C5995D36E",
+        "view": "front",
+        "layers": [
+          "5"
+        ],
+        "entities": [
+          1109,
+          1788
+        ],
+        "detail": "Difference of the wheel outline centre positions in the front view."
+      },
+      "cross_checks": [],
+      "model_parameter": "main_gear_track",
+      "model_value": 5.884759,
+      "deviation": 0.0,
+      "status": "match",
+      "note": "The model main-gear placeholders are placed at plus/minus half of this track and rest on the ground datum; they are not a landing-gear model."
+    }
+  ],
+  "limitations": [
+    "Only dimension texts are stated dimensions; all other values are measurements of drawing geometry multiplied by the solved scale.",
+    "points_ft uses the drawing origin, not an aircraft datum.",
+    "View labels come from fixed thresholds, verified by empty-band checks and a rendered preview; they are not from layer names.",
+    "The aft part of the side view (entities 2780-3111: propeller, spinner, winglet) sits beyond the fuselage outline on the sheet. It was tested and belongs to the side view, not a separate detail view: its entity indices interleave with the rest of the side view, its outlines touch the rear-fuselage and wing outlines at zero distance, and its spinner measures 1.312 x 0.844 ft against 1.351 x 0.925 ft in the top view, i.e. the same 1:1 scale. It is therefore reported as view=side.",
+    "Polylines are open/closed as stored (POLYLINE flag 0 for all 92); the file has no arcs, bulges or z coordinates."
+  ]
+}
